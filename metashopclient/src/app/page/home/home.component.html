@@ -1,0 +1,228 @@
+<header class="header">
+    <div class="header__top">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 col-md-6">
+                    <div class="header__top__left">
+                        <ul class="m-0">
+                            <li><i class="fa fa-envelope"></i> Scam@metashop.vn</li>
+                            <li></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6 p-0">
+                    <div class="header__top__right">
+                        <div class="header__top__right__social">
+                            <a href="#"><i class="fa fa-facebook"></i></a>
+                            <a href="#"><i class="fa fa-twitter"></i></a>
+                            <a href="#"><i class="fa fa-linkedin"></i></a>
+                            <a href="#"><i class="fa fa-pinterest-p"></i></a>
+                        </div>
+                        <div class="header__top__right__language">
+                            <img src="assets/img/language.png" alt="">
+                            <div>VNI</div>
+                            <span class="arrow_carrot-down"></span>
+                            <ul>
+                                <li><a href="#">VN</a></li>
+                                <li><a href="#">UK</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3">
+                <div class="header__logo">
+                    <a href="./index.html"><img src="assets/img/logo.png" alt=""></a>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <nav class="header__menu">
+                    <ul>
+                        <li class="active"><a href="./index.html">Trang chủ</a></li>
+                        <li><a href="./shop-grid.html">Cửa hàng</a></li>
+                        <li><a href="./blog.html">Tin Tức</a></li>
+                        <li><a href="./contact.html">Liên hệ</a></li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="col-lg-3">
+                <div class="header__cart">
+                    <ul>
+                        <li><a href="#"><i class="fa fa-heart"></i><span>0</span></a></li>
+                        <li><a href="#"><i class="fa fa-shopping-bag"></i> <span>{{totalCount}}</span></a></li>
+                    </ul>
+                    <div class="header__cart__price">Tổng: <span>{{totalPrice}}đ</span></div>
+                </div>
+            </div>
+        </div>
+        <div class="humberger__open">
+            <i class="fa fa-bars"></i>
+        </div>
+    </div>
+</header>
+<section class="hero">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3">
+                <app-danh-muc></app-danh-muc>
+            </div>
+            <div class="col-lg-9">
+                <div class="hero__search">
+                    <div class="hero__search__form col-lg-12">
+                        <form action="#">
+                            <div class="hero__search__categories">
+                                Sản phẩm
+                                
+                            </div>
+                            <input type="text" placeholder="Bạn cần tìm kiếm sản phẩm gì?">
+                            <button type="submit" class="site-btn">Tìm kiếm</button>
+                        </form>
+                    </div>
+                </div>
+                <div class="hero__item set-bg" data-setbg="./assets/img/bn.jpg">
+                    <div class="hero__text">
+                        <span>Metashop - Scam</span>
+                        <h2>Phục vụ  <br /> tận tình</h2>
+                        <p>Giao hàng nhanh chóng</p>
+                        <a href="#" class="primary-btn">Mua ngay</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Hero Section End -->
+
+<!-- Categories Section Begin -->
+<section class="categories">
+    <div class="container">
+        
+    </div>
+</section>
+<!-- Categories Section End -->
+
+<!-- Featured Section Begin -->
+<section class="featured spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="section-title">
+                    <h2>Một số sản phẩm</h2>
+                </div>
+                <div class="featured__controls">
+                    <ul>
+                        <li class="active" data-filter="*">Tất cả</li>
+                        <li data-filter=".SN">Sony</li>
+                        <li data-filter=".CN">Canon</li>
+                        <li data-filter=".FJS">Fujifilm</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="row featured__filter">
+            <div class="col-lg-3 col-md-4 col-sm-6 mix {{sanpham.nhanHieu}} fresh-meat" *ngFor="let sanpham of listSanPham">
+                <div class="featured__item">
+                    <div class="featured__item__pic set-bg"  [style.background-image]="'url(./assets/img/'+sanpham.anh2+')'">
+                        <ul class="featured__item__pic__hover">
+                            <li><a href="#"><i class="fa fa-heart"></i></a></li>
+                            <li><a href="#"><i class="fa fa-retweet"></i></a></li>
+                            <li><a (click)="themVaoGio(sanpham)"><i class="fa fa-shopping-cart"></i></a></li>
+                        </ul>
+                    </div>
+                    <div class="featured__item__text">
+                        <h6><a href="">{{sanpham.tenSanPham}}</a></h6>
+                        <h5>{{sanpham.gia}}đ</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Featured Section End -->
+
+<!-- Banner Begin -->
+<div class="banner">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-6">
+                <div class="banner__pic">
+                    <img src="/assets/img/banner/banner-1.jpg" alt="">
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-6">
+                <div class="banner__pic">
+                    <img src="/assets/img/banner/banner-2.jpg" alt="">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Banner End -->
+
+<!-- Latest Product Section Begin -->
+
+<!-- Latest Product Section End -->
+
+<!-- Blog Section Begin -->
+<section class="from-blog spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="section-title from-blog__title">
+                    <h2>From The Blog</h2>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4 col-md-4 col-sm-6">
+                <div class="blog__item">
+                    <div class="blog__item__pic">
+                        <img src="/assets/img/blog/blog-1.jpg" alt="">
+                    </div>
+                    <div class="blog__item__text">
+                        <ul>
+                            <li><i class="fa fa-calendar-o"></i> May 4,2019</li>
+                            <li><i class="fa fa-comment-o"></i> 5</li>
+                        </ul>
+                        <h5><a href="#">Cooking tips make cooking simple</a></h5>
+                        <p>Sed quia non numquam modi tempora indunt ut labore et dolore magnam aliquam quaerat </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-6">
+                <div class="blog__item">
+                    <div class="blog__item__pic">
+                        <img src="/assets/img/blog/blog-2.jpg" alt="">
+                    </div>
+                    <div class="blog__item__text">
+                        <ul>
+                            <li><i class="fa fa-calendar-o"></i> May 4,2019</li>
+                            <li><i class="fa fa-comment-o"></i> 5</li>
+                        </ul>
+                        <h5><a href="#">6 ways to prepare breakfast for 30</a></h5>
+                        <p>Sed quia non numquam modi tempora indunt ut labore et dolore magnam aliquam quaerat </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-6">
+                <div class="blog__item">
+                    <div class="blog__item__pic">
+                        <img src="/assets/img/blog/blog-3.jpg" alt="">
+                    </div>
+                    <div class="blog__item__text">
+                        <ul>
+                            <li><i class="fa fa-calendar-o"></i> May 4,2019</li>
+                            <li><i class="fa fa-comment-o"></i> 5</li>
+                        </ul>
+                        <h5><a href="#">Visit the clean farm in the US</a></h5>
+                        <p>Sed quia non numquam modi tempora indunt ut labore et dolore magnam aliquam quaerat </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,5 @@
+package vn.scam.metashop.entity;
+
+public class CuaHang {
+
+}

@@ -1,0 +1,11 @@
+<div class="hero__categories">
+    <div class="hero__categories__all" (click)="toggleModal();">
+        <i class="fa fa-bars"></i>
+        <span>Danh mục</span>
+    </div>
+    <ul>
+        <li *ngFor="let danhmuc of listDanhMuc">
+            <a href="/sanpham?danhMuc={{ danhmuc.id }}">{{danhmuc.tenDanhMuc}}</a>
+        </li>
+    </ul>
+</div>
