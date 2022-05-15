@@ -639,6 +639,7 @@ ol {
 }
 
 .hero__search__form {
+	width: 610px;
 	height: 50px;
 	border: 1px solid #ebebeb;
 	position: relative;

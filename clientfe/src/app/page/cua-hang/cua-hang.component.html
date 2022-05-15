@@ -1,0 +1,179 @@
+
+<header class="header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3">
+                <div class="header__logo">
+                    <a href="/"><img src="assets/img/logo2.png" alt=""></a>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <nav class="header__menu">
+                    <ul>
+                        <li><a href="/">Trang chủ</a></li>
+                        <li><a href="/cua-hang">Cửa hàng</a></li>
+                        <li><a href="/lien-he">Liên hệ</a></li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="col-lg-3">
+                <div class="header__cart">
+                    <ul>
+                        <li><a href="#"><i class="fa fa-heart"></i><span>0</span></a></li>
+                        <li><a href="/gio-hang"><i class="fa fa-shopping-bag"></i> <span>{{gioHang.tongSanPham}}</span></a></li>
+                    </ul>
+                    <div class="header__cart__price">Tổng: <span>{{gioHang.tongTien| currency: "VND" }}</span></div>
+                </div>
+            </div>
+        </div>
+        <div class="humberger__open">
+            <i class="fa fa-bars"></i>
+        </div>
+    </div>
+</header>
+<section class="hero hero-normal">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3">
+                <app-danh-muc></app-danh-muc>
+            </div>
+            <div class="col-lg-9">
+                <app-tim-kiem></app-tim-kiem>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Breadcrumb Section End -->
+
+<!-- Product Details Section Begin -->
+<section class="breadcrumb-section set-bg" data-setbg="./assets/img/banner/pexels-julia-avamotive-1097768.jpg">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="breadcrumb__text">
+                    <h2>Cửa hàng</h2>
+                    <div class="breadcrumb__option">
+                        <a href="">Trang chủ</a>
+                        <span>Cửa hàng</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Breadcrumb Section End -->
+
+<!-- Product Section Begin -->
+<div class=" mt-4 container">
+    <div class="row">
+        <div class="col-xl-3 col-lg-4 col-md-5">
+            <div class="sidebar">
+                <div class="sidebar__item">
+                    <h4>Danh mục sản phẩm</h4>
+                    <ul>
+                        <li class="main-nav-list">
+                            <a class="border-bottom-0" href="/cua-hang">
+                                <span class="lnr lnr-arrow-right pl-5"></span>
+                                Tất cả sản phẩm
+                            </a>
+                        </li>
+                        <ng-container *ngFor="let item of listOfDanhMuc">
+                            <li *ngIf="(danhMucId && danhMucId == item.id); else elseBlock" style="background: #ffba00;
+                            color: #fff;" class="main-nav-list pl-5 rounded ">
+                                <a class="border-bottom-0" href="/cua-hang/{{item.id}}">
+                                    <span class="lnr lnr-arrow-right"></span>
+                                    {{item.tenDanhMuc}}
+                                </a>
+                            </li>
+                            <ng-template #elseBlock>
+                                <li class="main-nav-list">
+                                    <a class="border-bottom-0" href="/cua-hang/{{item.id}}">
+                                        <span class="lnr lnr-arrow-right pl-5"></span>
+                                        {{item.tenDanhMuc}}
+                                    </a>
+                                </li>
+                            </ng-template>
+
+                        </ng-container>
+                    </ul>
+                </div>
+
+                <div class="sidebar__item">
+                    <h4 >Thương hiệu</h4>
+                    <ul>
+
+                        <li *ngFor="let item of listOfThuongHieu" class="filter-list pl-5"><input class="pixel-radio" type="radio"
+                                (click)="filterByBrand(item.tenVanTat)" id="apple" name="brand"><label for="apple"><a>
+                                    &nbsp;{{item.tenNhanHieu}}
+                                </a></label></li>
+
+                    </ul>
+                </div>
+                <div class="sidebar__item">
+                    <h4 >Khoảng giá</h4>
+                    <div class="sorting align-items-center" style="display:flex;">
+                        <span class="text-info pr-2">Từ</span>
+                        <nz-input-number [(ngModel)]="priceFrom" [nzMin]="0" [nzMax]="priceTo" [nzStep]="10000000" (ngModelChange)="priceChange()"></nz-input-number> 
+                        <span class="text-info pr-2">Đến</span>
+                        <nz-input-number [(ngModel)]="priceTo" [nzMin]="0" [nzMax]="300000000" [nzStep]="10000000" (ngModelChange)="priceChange()"></nz-input-number> 
+                    </div>
+                    <div class="text-center">{{priceFrom | currency: "VND" }} - {{priceTo | currency: "VND" }}</div>
+                    
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-9 col-lg-8 col-md-7">
+            <!-- Start Filter Bar -->
+            <div class="filter-bar d-flex flex-wrap align-items-center">
+                <div class="sorting align-items-center" style="display:flex;">
+                    <span class="text-info pr-2">Lọc theo</span>
+                    <nz-select ngModel="{{status}}" (ngModelChange)="changeStatus($event)">
+                        <nz-option nzValue="default" nzLabel="Mặc định"></nz-option>
+                        <nz-option nzValue="p-des" nzLabel="Gía giảm dần"></nz-option>
+                        <nz-option nzValue="p-asc" nzLabel="Giá tăng dần"></nz-option>
+                    </nz-select>
+                </div>
+            </div>
+            <h3>Bạn tìm được: {{totalProduct}} sản phẩm </h3>
+            <!-- End Filter Bar -->
+            <!-- Start Best Seller -->
+            <section class="lattest-product-area pb-40 category-list">
+                <div class="mid-popular row" id="content_value">
+                    <div *ngFor="let sanpham of listOfData" class="col-lg-4 col-md-6 mix">
+                            <div class="featured__item">
+                                <div class="featured__item__pic set-bg"  [style.background-image]="'url(./assets/img/'+sanpham.anh1+')'">
+                                    <ul class="featured__item__pic__hover">
+                                        <li><a href="#"><i class="fa fa-heart"></i></a></li>
+                                        <li><a href="#"><i class="fa fa-retweet"></i></a></li>
+                                        <li><a (click)="themVaoGio(sanpham)"><i class="fa fa-shopping-cart"></i></a></li>
+                                    </ul>
+                                </div>
+                                <div class="featured__item__text">
+                                    <h6><a href="/chitiet/{{sanpham.id}}">{{sanpham.tenSanPham}}</a></h6>
+                                    <h5><div *ngIf="sanpham.gia != null; else elseBlock">{{sanpham.gia | currency: "VND" }}</div>
+                                        <ng-template #elseBlock><span class="text-danger">Liên hệ với cửa hàng</span></ng-template></h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            </section>
+            <!-- End Best Seller -->
+
+            <div  class="row mb-5">
+                <div class="col-md-8 mx-auto">
+                    <nz-pagination [nzPageIndex]="pageIndex" [nzTotal]="totalProduct" nzShowSizeChanger
+                        [nzPageSize]="pageSize" (nzPageIndexChange)="onPageIndexChange($event)"
+                        (nzPageSizeChange)="onPageSizeChange($event)">
+                    </nz-pagination>
+                </div>
+            </div>
+
+
+        </div>
+
+
+    </div>
+</div>
+<!-- Product Details Section End -->
+
+<!-- Related Product Section Begin -->

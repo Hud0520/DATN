@@ -1,0 +1,180 @@
+
+<header class="header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3">
+                <div class="header__logo">
+                    <a href="/"><img src="assets/img/logo2.png" alt=""></a>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <nav class="header__menu">
+                    <ul>
+                        <li><a href="/">Trang chủ</a></li>
+                        <li><a href="/cua-hang">Cửa hàng</a></li>
+                        <li><a href="/lien-he">Liên hệ</a></li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="col-lg-3">
+                <div class="header__cart">
+                    <ul>
+                        <li><a href="#"><i class="fa fa-heart"></i><span>0</span></a></li>
+                        <li><a href="/gio-hang"><i class="fa fa-shopping-bag"></i> <span>{{gioHang.tongSanPham}}</span></a></li>
+                    </ul>
+                    <div class="header__cart__price">Tổng: <span>{{gioHang.tongTien| currency: "VND" }}</span></div>
+                </div>
+            </div>
+        </div>
+        <div class="humberger__open">
+            <i class="fa fa-bars"></i>
+        </div>
+    </div>
+</header>
+<section class="hero hero-normal">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3">
+                <app-danh-muc></app-danh-muc>
+            </div>
+            <div class="col-lg-9">
+                <app-tim-kiem></app-tim-kiem>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="breadcrumb-section set-bg" data-setbg="./assets/img/banner/pexels-julia-avamotive-1097768.jpg">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="breadcrumb__text">
+                    <h2>Chi tiết sản phẩm</h2>
+                    <div class="breadcrumb__option">
+                        <a href="/">Trang chủ</a>
+                        <a href="/sanpham">Sản phẩm</a>
+                        <span>Chi tiết sả phẩm</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Breadcrumb Section End -->
+
+<!-- Product Details Section Begin -->
+<section class="product-details spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 col-md-6">
+                <div class="product__details__pic">
+                    <div class="product__details__pic__item">
+                        <img class="product__details__pic__item--large"
+                            src="/assets/img/{{sanPham.anh1}}" alt="">
+                    </div>
+                    <div class="product__details__pic__slider">
+                        <owl-carousel-o >
+                            <ng-template carouselSlide >
+                              <div class="slide">
+                                <img src="/assets/img/{{sanPham.anh1}}" alt="" (click)="changeImg('/assets/img/'+[sanPham.anh1])">
+                              </div>
+                            </ng-template>
+                            <ng-template carouselSlide>
+                              <div class="slide">
+                                <img src="/assets/img/{{sanPham.anh2}}" alt="" (click)="changeImg('/assets/img/'+[sanPham.anh2])">
+                              </div>
+                            </ng-template>
+                            <ng-template carouselSlide>
+                              <div class="slide">
+                                <img src="/assets/img/{{sanPham.anh3}}" alt="" (click)="changeImg('/assets/img/'+[sanPham.anh3])">
+                              </div>
+                            </ng-template>
+                            <ng-template carouselSlide>
+                              <div class="slide">
+                                <img src="/assets/img/{{sanPham.anh4}}" alt="" (click)="changeImg('/assets/img/'+[sanPham.anh4])">
+                              </div>
+                            </ng-template>
+                          </owl-carousel-o>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-6">
+                <div class="product__details__text">
+                    <h3>{{sanPham.tenSanPham}}</h3>
+                    <div class="product__details__price">
+                        <div *ngIf="sanPham.gia != null; else elseBlock">{{sanPham.gia | currency: "VND" }}</div>
+<ng-template #elseBlock><span class="text-danger">Liên hệ với cửa hàng</span></ng-template>
+                    </div>
+                    <div>
+                        <ul>
+                            <li>{{listTomTat[0]}}</li>
+                            <li>{{listTomTat[1]}}</li>
+                            <li>{{listTomTat[2]}}</li>
+                            <li>{{listTomTat[3]}}</li>
+                        </ul>
+                    </div>
+                    <div class="product__details__quantity">
+                        <div class="quantity">
+                            <div class="pro-qty">
+                                <span class="dec qtybtn" (click)="giamSoLuong()">-</span>
+                                <input type="text" [value]="soluong" min="1" max="{{sanPham.soLuong}}" readonly>
+                                <span class="inc qtybtn" (click)="tangSoluong()">+</span>
+                            </div>
+                        </div>
+                    </div>
+                    <a (click)="themVaoGioHang()" class="primary-btn">Thêm vào giỏ hàng</a>
+                    <a href="#" class="heart-icon"><span class="icon_heart_alt"></span></a>
+                    <ul>
+                        <li><b>Tình trạng</b> <span *ngIf="sanPham.soLuong != 0; else elseBlock" class="text-success">Còn hàng</span>
+                            <ng-template #elseBlock><span class="text-danger">Sản phẩm hết hàng</span></ng-template></li>
+                        <li><b>Bảo hành</b> <span>{{sanPham.baoHanh}}</span></li>
+                        <li><b>Phụ kiện</b> <span>{{sanPham.phuKien}}</span></li>
+                        <li><b>Cấu hình</b> <span class="bg-info p-2 rounded">{{sanPham.cauHinh}}</span></li>
+                        <li><b>Share on</b>
+                            <div class="share">
+                                <a href="#"><i class="fa fa-facebook"></i></a>
+                                <a href="#"><i class="fa fa-twitter"></i></a>
+                                <a href="#"><i class="fa fa-instagram"></i></a>
+                                <a href="#"><i class="fa fa-pinterest"></i></a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-12">
+                <div class="product__details__tab">
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" data-toggle="tab" href="#tabs-1" role="tab"
+                                aria-selected="true">Chi tiết sản phẩm</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#tabs-2" role="tab"
+                                aria-selected="false">Thông số kỹ thuât</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content col-lg-9">
+                        <div class="tab-pane active" id="tabs-1" role="tabpanel">
+                            <div class="product__details__tab__desc" innerHTML="{{sanPham.chiTiet}}" >
+                                
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="tabs-2" role="tabpanel">
+                            <div class="product__details__tab__desc" innerHTML="{{sanPham.thongSo}}">
+                                
+                            </div>
+                            <div class="product__details__tab__desc" >
+                                <ul>
+                                    <li *ngFor="let li of listTomTat">{{li}}</li>
+                                </ul>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Product Details Section End -->
+
+<!-- Related Product Section Begin -->

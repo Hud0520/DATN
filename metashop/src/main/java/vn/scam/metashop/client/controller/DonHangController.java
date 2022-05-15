@@ -1,5 +1,6 @@
 package vn.scam.metashop.client.controller;
 
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
@@ -15,6 +16,7 @@ import org.springframework.http.HttpRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import vn.scam.metashop.BaseController;
@@ -32,15 +34,17 @@ public class DonHangController extends BaseController {
     @Autowired DonHangRepo donHangRepo;
     @Autowired ChiTietDonHangRepo chiTietDonHangRepo;
     @PostMapping("/them")
-    public ResponseEntity datHang(DonHang donhang,HttpSession session,HttpRequest request, HTTPResponse response){
+    public ResponseEntity datHang(@RequestBody DonHang donhang){
         MetaResponse res = validate(donhang);
         if(Constants.SUCCESS_CODE.equals(res.getErrCode())){
+        	donhang.setNgayTao(new Date());
             donhang.setTrangThai(Constants.Status.PENDING);
-            donhang = donHangRepo.save(donhang);
+            donHangRepo.save(donhang);
             Integer maDonHang = donhang.getId();
-            GioHang gioHang = (GioHang) session.getAttribute(Constants.GIO_HANG);
-            List<ChiTietDonHang> chitiet = gioHang.getSanPhams().values().stream()
-            .map((t) ->new ChiTietDonHang(maDonHang, t.getId(), t.getSoLuong(), t.getGia())).collect(Collectors.toList());
+            List<ChiTietDonHang> chitiet = donhang.getChiTiet();
+            for(ChiTietDonHang a : chitiet) {
+            	a.setMaDonHang(maDonHang);
+            }
             chiTietDonHangRepo.saveAll(chitiet);
 
             return successResponse(res);

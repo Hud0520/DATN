@@ -1,13 +1,7 @@
 {
 	"folders": [
 		{
-			"path": "metashop"
-		},
-		{
-			"path": "metashopfo"
-		},
-		{
-			"path": "metashopclient"
+			"path": "clientfe"
 		}
 	],
 	"settings": {}

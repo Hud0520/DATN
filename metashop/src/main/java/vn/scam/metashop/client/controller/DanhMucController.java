@@ -38,7 +38,7 @@ public class DanhMucController extends BaseController {
 			Pageable pageable = PageRequest.of(page,pageSize,Sort.by(sortby).descending());
 			Page<DanhMuc> list= danhMucServices.findAll(object, pageable);
 			Grid<DanhMuc> grid = new Grid<>();
-			grid.setTotal(list.getTotalElements());
+			grid.setTotal((long)list.getTotalElements());
 			grid.setResult(list.getContent());
 			return new ResponseEntity<Grid<DanhMuc>>(grid,HttpStatus.OK);
 		}catch (Exception e) {

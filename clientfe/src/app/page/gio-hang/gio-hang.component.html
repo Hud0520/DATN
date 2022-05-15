@@ -1,0 +1,129 @@
+<header class="header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3">
+                <div class="header__logo">
+                    <a href="/"><img src="assets/img/logo2.png" alt=""></a>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <nav class="header__menu">
+                    <ul>
+                        <li><a href="/">Trang chủ</a></li>
+                        <li><a href="/cua-hang">Cửa hàng</a></li>
+                        <li><a href="/lien-he">Liên hệ</a></li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="col-lg-3">
+                <div class="header__cart">
+                    <ul>
+                        <li><a href="#"><i class="fa fa-heart"></i><span>0</span></a></li>
+                        <li><a href="/gio-hang"><i class="fa fa-shopping-bag"></i> <span>{{gioHang.tongSanPham}}</span></a></li>
+                    </ul>
+                    <div class="header__cart__price">Tổng: <span>{{gioHang.tongTien| currency: "VND" }}</span></div>
+                </div>
+            </div>
+        </div>
+        <div class="humberger__open">
+            <i class="fa fa-bars"></i>
+        </div>
+    </div>
+</header>
+<section class="hero hero-normal">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3">
+                <app-danh-muc></app-danh-muc>
+            </div>
+            <div class="col-lg-9">
+                <app-tim-kiem></app-tim-kiem>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Breadcrumb Section End -->
+
+<!-- Product Details Section Begin -->
+<section class="breadcrumb-section set-bg" data-setbg="./assets/img/banner/pexels-julia-avamotive-1097768.jpg">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="breadcrumb__text">
+                    <h2>Giỏ Hàng</h2>
+                    <div class="breadcrumb__option">
+                        <a href="">Trang chủ</a>
+                        <span>Giỏ Hàng</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="shoping-cart spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="shoping__cart__table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th class="shoping__product">Sản phẩm</th>
+                                <th>Giá</th>
+                                <th>Số lượng</th>
+                                <th>Tổng</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngIf="gioHang.tongSanPham == 0"><td colspan ="5" class="text-center">Giỏ hàng trống</td></tr>
+                            <tr *ngFor="let sp of gioHang.sanPhams">
+                                <td class="shoping__cart__item d-flex align-items-center">
+                                    <img src="assets/img/{{sp.anh1}}" alt="">
+                                    <h5>{{sp.tenSanPham}}</h5>
+                                </td>
+                                <td class="shoping__cart__price">
+                                    {{sp.gia| currency: "VND" }}
+                                </td>
+                                <td class="shoping__cart__quantity">
+                                    <div class="quantity">
+                                        <div class="pro-qty">
+                                            <span class="dec qtybtn" (click)="capNhatGioHangGiam(sp)">-</span>
+                                            <input type="text" [ngModel]="sp.soLuong" min="1"readonly>
+                                            <span class="inc qtybtn" (click)="capNhatGioHangTang(sp)">+</span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="shoping__cart__total">
+                                    {{sp.gia*sp.soLuong | currency: "VND"}}
+                                </td>
+                                <td class="shoping__cart__item__close">
+                                    <a  nz-button (click)="xoaSanPham(sp.id)" class="primary-btn cart-btn cart-btn-right"><span class="icon_close"></span></a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="shoping__cart__btns">
+                    <a href="/cua-hang" nz-button class="primary-btn cart-btn">Tiếp tục mua hàng</a>
+                    <a  nz-button (click)="xoaGioHang()" class="primary-btn cart-btn cart-btn-right">Xóa giỏ hàng</a>
+                </div>
+            </div>
+            
+            <div class="col-lg-6">
+                <div class="shoping__checkout">
+                    <h5>Tổng giỏ hàng</h5>
+                    <ul>
+                        <li>Tạm tính<span>{{gioHang.tongTien | currency: "VND"}}</span></li>
+                        <li>Tổng <span>{{gioHang.tongTien | currency: "VND"}}</span></li>
+                    </ul>
+                    <a href="/dat-hang" class="primary-btn">Đặt hàng</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

@@ -17,6 +17,8 @@ import { HomeComponent } from './page/home/home.component';
 import { SharedModule } from './shared/shared.module';
 import { DanhMucComponent } from './page/danh-muc/danh-muc.component';
 import { ChiTietComponent } from './page/chi-tiet/chi-tiet.component';
+import { LienHeComponent } from './page/lien-he/lien-he.component';
+import { GioHangComponent } from './page/gio-hang/gio-hang.component';
 
 registerLocaleData(en);
 
@@ -28,6 +30,8 @@ registerLocaleData(en);
     HomeComponent,
     DanhMucComponent,
     ChiTietComponent,
+    LienHeComponent,
+    GioHangComponent,
     
   ],
   imports: [

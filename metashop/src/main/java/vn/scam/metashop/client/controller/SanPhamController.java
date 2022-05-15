@@ -1,5 +1,6 @@
 package vn.scam.metashop.client.controller;
 
+import java.util.List;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
@@ -45,12 +46,31 @@ public class SanPhamController extends BaseController {
 			if("desc".equals(order)){
 				sort = Sort.by(sortby).descending();
 			}
-			Pageable pageable = PageRequest.of(page,pageSize,sort);
+			Pageable pageable = PageRequest.of(page-1,pageSize,sort);
 			 
 			Page<SanPham> list= sanPhamServices.findAll(object, pageable);
 			
-			grid.setTotal(list.getTotalElements());
+			grid.setTotal((long)list.getTotalElements());
 			grid.setResult(list.getContent());
+			grid.setErrCode(Constants.SUCCESS_CODE);
+			grid.setErrDessc(Constants.SUCCESS_MSG);
+			return new ResponseEntity<Grid<SanPham>>(grid,HttpStatus.OK);
+		}catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			grid.setErrCode(Constants.FAIL_CODE);
+			grid.setErrDessc(e.getMessage());
+			return new ResponseEntity<Grid<SanPham>>(grid,HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+    
+    @GetMapping(path = "/get-by-order")
+    public ResponseEntity getListData(HttpServletRequest request, HttpServletResponse response){
+		Grid<SanPham> grid = new Grid<>();
+		try {
+			List<SanPham> list= sanPhamRepo.getByOrder();
+			grid.setTotal((long) list.size());
+			grid.setResult(list);
 			grid.setErrCode(Constants.SUCCESS_CODE);
 			grid.setErrDessc(Constants.SUCCESS_MSG);
 			return new ResponseEntity<Grid<SanPham>>(grid,HttpStatus.OK);

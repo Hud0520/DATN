@@ -7,6 +7,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
@@ -25,7 +28,7 @@ public class ChiTietDonHang {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     
-    @Column(name = "MA_DON_HANG")
+    @Column(name="MA_DON_HANG")
     private Integer maDonHang;
 
     @Column(name = "MA_SAN_PHAM")

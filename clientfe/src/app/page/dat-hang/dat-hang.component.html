@@ -1,0 +1,115 @@
+<header class="header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3">
+                <div class="header__logo">
+                    <a href="/"><img src="assets/img/logo2.png" alt=""></a>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <nav class="header__menu">
+                    <ul>
+                        <li><a href="/">Trang chủ</a></li>
+                        <li><a href="/cua-hang">Cửa hàng</a></li>
+                        <li><a href="/lien-he">Liên hệ</a></li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="col-lg-3">
+                <div class="header__cart">
+                    <ul>
+                        <li><a href="#"><i class="fa fa-heart"></i><span>0</span></a></li>
+                        <li><a href="/gio-hang"><i class="fa fa-shopping-bag"></i> <span>{{gioHang.tongSanPham}}</span></a></li>
+                    </ul>
+                    <div class="header__cart__price">Tổng: <span>{{gioHang.tongTien| currency: "VND" }}</span></div>
+                </div>
+            </div>
+        </div>
+        <div class="humberger__open">
+            <i class="fa fa-bars"></i>
+        </div>
+    </div>
+</header>
+<section class="hero hero-normal">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3">
+                <app-danh-muc></app-danh-muc>
+            </div>
+            <div class="col-lg-9">
+                <app-tim-kiem></app-tim-kiem>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Breadcrumb Section End -->
+
+<!-- Product Details Section Begin -->
+<section class="breadcrumb-section set-bg" data-setbg="./assets/img/banner/pexels-julia-avamotive-1097768.jpg">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="breadcrumb__text">
+                    <h2>Đăt Hàng</h2>
+                    <div class="breadcrumb__option">
+                        <a href="">Trang chủ</a>
+                        <span>Đặt Hàng</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="checkout spad">
+    <div class="container">
+        <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()" class="row">
+            <div class="col-md-6 login-do1 animated wow fadeInLeft" data-wow-delay=".5s">
+                
+                <nz-form-item>
+                    <nz-form-control nzErrorTip="Nhập tên!">
+                        <input type="text" nz-input formControlName="hoTen" placeholder="Tên" />
+                    </nz-form-control>
+                </nz-form-item>
+                <nz-form-item>
+                    <nz-form-control nzErrorTip="Nhập số điện thoại!">
+                        <input type="number" nz-input formControlName="sdtNguoiNhan" placeholder="Số điện thoại" />
+                    </nz-form-control>
+                </nz-form-item>
+                <nz-form-item>
+                    <nz-form-control nzErrorTip="Nhập địa chỉ!">
+                            <input  type="text" nz-input formControlName="diaChiNhan" placeholder="Địa chỉ" />
+                    </nz-form-control>
+                </nz-form-item>
+                <nz-form-item>
+                    <nz-form-control nzErrorTip="Nhập địa chỉ email!">
+                            <input  type="text" nz-input formControlName="emailNguoiNhan" placeholder="Email" />
+                    </nz-form-control>
+                </nz-form-item>
+                <nz-form-item>
+                    <nz-form-label>Phương thức thanh toán</nz-form-label>
+                    <nz-select formControlName="payment">
+                        <nz-option nzValue="Live" nzLabel="Trực tiếp"></nz-option>
+                        <nz-option nzValue="Bank transfer" nzLabel="Chuyển khoản"></nz-option>
+                    </nz-select>
+                </nz-form-item>
+                <div class=" login-do animated wow fadeInRight" data-wow-delay=".5s">
+                    <label class="hvr-sweep-to-top login-sub">
+                        <input type="hidden" value="insert" name="command">
+                        <input type="submit" value="Xác nhận thanh toán">
+                    </label>
+                </div>
+                <div class="clearfix"> </div>
+            </div>
+            <div class="col-md-6">
+                    <div class="checkout__order">
+                        <h4>Đơn hàng của bạn</h4>
+                        <div class="checkout__order__products">Sản phẩm <span>Giá</span></div>
+                        <ul>
+                            <div class="row" *ngFor="let sp of gioHang.sanPhams"><div class="col-md-8 ">{{sp.tenSanPham}} </div><span class="col-md-4 text-right ">{{sp.gia*sp.soLuong| currency: "VND" }}</span></div>
+                        </ul>
+                        <div class="checkout__order__total row"><div class="col-md-8 ">Tổng</div><span class="col-md-4 text-right ">{{gioHang.tongTien |currency: "VND" }}</span></div>
+                    </div>
+                </div>
+        </form>
+    </div>
+</section>

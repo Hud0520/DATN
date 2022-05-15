@@ -32,9 +32,10 @@ public class SimpleCORSFilter implements Filter {
 		if(req instanceof HttpServletRequest) {
 			allowOrigin=getAllowOrigin((HttpServletRequest)req);
 		}
+		HttpServletRequest request = (HttpServletRequest) req;
 		response.setHeader("Access-Control-Allow-Origin", allowOrigin);
 		response.setHeader("Access-Control-Allow-Credentials", "true");
-		response.setHeader("Access-Control-Allow-Methods", "POST, GET, PUT, OPTIONS, DELETE");
+		response.setHeader("Access-Control-Allow-Methods", "POST, GET ");
 		response.setHeader("Access-Control-Max-Age", "3600");
 		response.setHeader("Access-Control-Allow-Headers",
 				"authorization, x-auth-token, Content-Type, Accept, X-Requested-With, remember-me");

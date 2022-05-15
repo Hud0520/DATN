@@ -1,0 +1,71 @@
+package vn.scam.metashop.client.controller;
+
+import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
+
+import javax.servlet.http.HttpSession;
+
+import com.nimbusds.oauth2.sdk.Response;
+import com.nimbusds.oauth2.sdk.http.HTTPResponse;
+
+import org.hibernate.mapping.MetaAttributable;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import vn.scam.metashop.BaseController;
+import vn.scam.metashop.common.Constants;
+import vn.scam.metashop.dto.MetaResponse;
+import vn.scam.metashop.entity.ChiTietDonHang;
+import vn.scam.metashop.entity.DonHang;
+import vn.scam.metashop.entity.GioHang;
+import vn.scam.metashop.repository.ChiTietDonHangRepo;
+import vn.scam.metashop.repository.DonHangRepo;
+
+@Controller
+@RequestMapping("/api/v1/donhang")
+public class DonHangController extends BaseController {
+    @Autowired DonHangRepo donHangRepo;
+    @Autowired ChiTietDonHangRepo chiTietDonHangRepo;
+    @PostMapping("/them")
+    public ResponseEntity datHang(DonHang donhang,HttpSession session,HttpRequest request, HTTPResponse response){
+        MetaResponse res = validate(donhang);
+        if(Constants.SUCCESS_CODE.equals(res.getErrCode())){
+            donhang.setTrangThai(Constants.Status.PENDING);
+            donhang = donHangRepo.save(donhang);
+            Integer maDonHang = donhang.getId();
+            GioHang gioHang = (GioHang) session.getAttribute(Constants.GIO_HANG);
+            List<ChiTietDonHang> chitiet = gioHang.getSanPhams().values().stream()
+            .map((t) ->new ChiTietDonHang(maDonHang, t.getId(), t.getSoLuong(), t.getGia())).collect(Collectors.toList());
+            chiTietDonHangRepo.saveAll(chitiet);
+
+            return successResponse(res);
+        }else{
+            return errorResponse(res);
+        }
+    }
+    private MetaResponse validate(DonHang dh){
+        MetaResponse res = new MetaResponse();
+        res.setResult(Constants.SUCCESS_CODE,Constants.SUCCESS_MSG);
+        String errm = "";
+        if("".equals(dh.getDiaChiNhan().trim())){
+            res.setErrCode(Constants.FAIL_CODE);
+            errm += "Địa chỉ nhận không được để trống. </br>";
+        }
+        if("".equals(dh.getEmailNguoiNhan().trim())){
+            res.setErrCode(Constants.FAIL_CODE);
+            errm += "Email người nhận không được để trống. </br>";
+        }
+        if("".equals(dh.getSdtNguoiNhan().trim())){
+            res.setErrCode(Constants.FAIL_CODE);
+            errm += "Số điện thoại người nhận không được để trống. </br>";
+        }
+        res.setErrMsg(errm);
+        return res;
+    }
+    
+}
