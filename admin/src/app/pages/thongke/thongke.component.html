@@ -1,0 +1,57 @@
+<div nz-row>
+    <div nz-col class="p-10" nzSpan="8">
+        <div class="b-container" style="display: flex;">
+            <div>
+                <nz-avatar [nzSize]="64" nzIcon="user"></nz-avatar>
+            </div>
+            <div class="pl-10">
+                <h2>Xin chào</h2>
+                <h3 style="text-transform: uppercase;">{{userName}}</h3>
+            </div>
+        </div>
+        <div class="b-container">
+            <h2>Xuất báo cáo tồn kho</h2>
+            <button (click)=" getStaticProduct()" class="btn-green"><i nz-icon nzType="file-excel" nzTheme="outline"></i> Xuất Excel</button>
+        </div>
+        <div class="b-container">
+            <h2>Xuất báo cáo thu nhập Tuần</h2>
+            <h2 class="red">Từ {{monday|date:'dd/MM/yyyy'}} đến {{sunday|date:'dd/MM/yyyy'}}</h2>
+            <button (click)=" getStaticBillThisWeek()" class="btn-green"><i nz-icon nzType="file-excel" nzTheme="outline"></i> Xuất Excel</button>
+        </div>
+    </div>
+    <div nz-col class="p-10" nzSpan="8">
+        <div class="b-container">
+
+            <h2 class="d-center">Các sản phẩm theo thương hiệu (Đơn vị: Sản phẩm)</h2>
+            <div class="d-center">
+                <canvas height="250px" width="250px" baseChart [data]="pieChartData" [labels]="pieChartLabels"
+                    [chartType]="pieChartType" [options]="pieChartOptions" [colors]="pieChartColors">
+                </canvas>
+            </div>
+        </div>
+    </div>
+    <div nz-col class="p-10" nzSpan="8">
+        <div class="b-container">
+
+            <h2 class="d-center">Tỷ lệ sản phẩm theo thể loại (Đơn vị: %)</h2>
+            <div class="d-center">
+                <canvas height="250px" width="250px" baseChart [data]="pieChartData1" [labels]="pieChartLabels1"
+                    [chartType]="pieChartType" [options]="pieChartOptions" [colors]="pieChartColors1">
+                </canvas>
+            </div>
+        </div>
+    </div>
+    <div nz-col class="p-10" nzSpan="24">
+        <div class="b-container">
+            <h2 class="d-center">Biểu đồ thu nhập tháng {{month|date:'MM'}}</h2>
+            <canvas baseChart width="1000" height="400"
+            [datasets]="lineChartData"
+            [labels]="lineChartLabels"
+            [options]="pieChartOptions"
+            [colors]="lineChartColors"
+            [chartType]="lineChartType"
+            >
+          </canvas>
+        </div>
+    </div>
+</div>

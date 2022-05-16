@@ -1,5 +1,6 @@
 package vn.scam.metashop.entity;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -66,6 +67,9 @@ public class DonHang {
     @JsonFormat(pattern="yyyy-MM-dd")
     @Column(name = "NGAY_TAO")
     private Date ngayTao;
+    
+    @Column(name = "TONG_TIEN")
+    private BigDecimal tongTien;
     
     @OneToMany(mappedBy="maDonHang",cascade = CascadeType.ALL)
     List<ChiTietDonHang> chiTiet;

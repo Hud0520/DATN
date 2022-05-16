@@ -1,0 +1,42 @@
+<nz-table nzShowSizeChanger [nzData]="listOfData" [nzFrontPagination]="false" [nzLoading]="loading" [nzTotal]="total"
+    [nzPageSize]="pageSize" [nzPageIndex]="pageIndex" (nzQueryParams)="onQueryParamsChange($event)">
+    <thead>
+        <tr>
+            <th nzColumnKey="categoryName" [nzSortFn]="true" style="text-align: center;">Tên</th>
+            <th style=" display: flex; justify-content: space-around; align-items: center;"> <span>Thao tác</span> <a (click)="showModal(null)"
+                    title="Thêm mới"><i style="font-size: 20px;" nz-icon nzType="plus-circle" nzTheme="twotone"></i></a>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let data of listOfData">
+            <td>{{ data.tenDanhMuc }}</td>
+            <td>
+                <button (click)="showModal(data.id)" class="m-5" nz-button nzType="default">Sửa</button>
+                <nz-divider nzType="vertical"></nz-divider>
+                <button (click)="delCategory(data.id)" class="m-5" nz-button nzType="primary" nzDanger>Xóa</button>
+                <nz-divider nzType="vertical"></nz-divider>
+            </td>
+        </tr>
+    </tbody>
+</nz-table>
+
+<nz-modal [(nzVisible)]="isVisible" nzTitle="{{isEdit?'Chỉnh sửa':'Thêm mới'}}" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
+    <ng-container *nzModalContent>
+        <form nz-form [formGroup]="validateForm">
+            <nz-form-item>
+                <nz-form-control nzErrorTip="Vui lòng nhập tên thể loại!">
+                    <div nz-row>
+                        <div nz-col nzSpan="12">Tên thể loại</div>
+                        <div nz-col nzSpan="12">
+                            <nz-input-group>
+                                <input type="text" nz-input formControlName="categoryName" placeholder="Tên thể loại" />
+                            </nz-input-group>
+                        </div>
+                    </div>
+
+                </nz-form-control>
+            </nz-form-item>
+        </form>
+    </ng-container>
+</nz-modal>

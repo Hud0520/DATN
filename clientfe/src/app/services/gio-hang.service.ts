@@ -52,7 +52,7 @@ export class GioHangService {
   }
   capNhat(item : SanPham){
     this.gioHang.sanPhams.forEach((ele) => {
-      if (ele.id == item.id && ele.soLuong > 1) {
+      if (ele.id == item.id && item.soLuong > 1) {
         ele.soLuong = item.soLuong;
       }
     });

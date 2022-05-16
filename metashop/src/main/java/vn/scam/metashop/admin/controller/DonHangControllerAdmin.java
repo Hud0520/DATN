@@ -31,18 +31,18 @@ import vn.scam.metashop.repository.ChiTietDonHangRepo;
 import vn.scam.metashop.repository.DonHangRepo;
 
 @Controller
-@RequestMapping(path = "/api/admin/v1/DonHang")
+@RequestMapping(path = "/api/admin/v1/donhang")
 public class DonHangControllerAdmin extends BaseController {
     @Autowired DonHangRepo donHangRepo;
 	@Autowired DonHangServices danhMucServices;
     @Autowired ChiTietDonHangRepo chiTietDonHangRepo;
-	@GetMapping(path = "/list-data")
+	@GetMapping(path = "")
 	public ResponseEntity getListData(DonHangDto object, HttpServletRequest request, HttpServletResponse response){
 		try {
 			int pageSize = request.getParameter("pageSize") == null ? 20 : Integer.valueOf(request.getParameter("pageSize"));
-			int page = request.getParameter("page") == null ? 0 : Integer.valueOf(request.getParameter("page"));
+			int page = request.getParameter("page") == null ? 1 : Integer.valueOf(request.getParameter("page"));
 			String sortby = request.getParameter("sortby") == null ? "id" : request.getParameter("sortby");
-			Pageable pageable = PageRequest.of(page,pageSize,Sort.by(sortby).descending());
+			Pageable pageable = PageRequest.of(page-1,pageSize,Sort.by(sortby).descending());
 			Page<DonHang> list= danhMucServices.findAll(object, pageable);
 			Grid<DonHang> grid = new Grid<>();
 			grid.setTotal(list.getTotalElements());
@@ -93,7 +93,7 @@ public class DonHangControllerAdmin extends BaseController {
         }
     }
 
-	@GetMapping(path = "/list-sanpham-chitiet")
+	@GetMapping(path = "/chitiet")
 	public ResponseEntity getListSanPham(String id){
 		MetaResponse res = new MetaResponse();
 		if(id == null){

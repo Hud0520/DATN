@@ -8,6 +8,7 @@
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
 		<list key="findhistory">
+			<item value="int page = request.getParameter(&quot;page&quot;) == null ? 0 : Integer.valueOf(request.getParameter(&quot;page&quot;));"/>
 			<item value="FwResponse"/>
 		</list>
 		<list key="replacehistory">

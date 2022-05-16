@@ -46,9 +46,12 @@ export class GioHangComponent implements OnInit {
     this.gioHang = this.gioHangSer.getGioHang();
   }
   capNhatGioHangGiam(item : SanPham){
-    item.soLuong--
-    this.gioHangSer.capNhat(item);
-    this.gioHang = this.gioHangSer.getGioHang();
+    if(item.soLuong>1){
+      item.soLuong--;
+      this.gioHangSer.capNhat(item);
+      this.gioHang = this.gioHangSer.getGioHang();
+    }
+    
   }
 
 

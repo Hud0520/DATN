@@ -15,6 +15,7 @@ export class DonHang{
     ghiChu : string;
     ngayTao : string;
     chiTiet : any;
+    tongTien : number
     constructor(){
         this.id = "";
         this.khachHang = "";
@@ -29,6 +30,7 @@ export class DonHang{
         this.ghiChu = "";
         this.ngayTao = "";
         this.chiTiet = [];
+        this.tongTien = 0 ;
     }
     
 }

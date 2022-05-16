@@ -1,0 +1,67 @@
+<nz-layout class="app-layout">
+  <nz-sider class="menu-sidebar" nzCollapsible nzWidth="256px" nzBreakpoint="md" [(nzCollapsed)]="isCollapsed"
+    [nzTrigger]="null">
+    <div class="sidebar-logo">
+      <a href="/home">
+        <h1 class="text-center">Scam</h1>
+      </a>
+    </div>
+    <ul nz-menu nzTheme="dark" nzMode="inline" [nzInlineCollapsed]="isCollapsed">
+      <li nz-submenu nzOpen nzTitle="Dashboard" nzIcon="dashboard">
+        <ul>
+          <li nz-menu-item nzMatchRouter>
+            <a routerLink="/home">Thống kê</a>
+          </li>
+          <li nz-menu-item nzMatchRouter>
+            <a routerLink="/products">Quản lý sản phẩm</a>
+          </li>
+          <li nz-menu-item nzMatchRouter>
+            <a routerLink="/category">Quản lý danh mục</a>
+          </li>
+          <li nz-menu-item nzMatchRouter>
+            <a routerLink="/brand">Quản lý thương hiệu</a>
+          </li>
+          <li nz-menu-item nzMatchRouter>
+            <a routerLink="/user">Quản lý người dùng</a>
+          </li>
+        </ul>
+      </li>
+      <li nz-submenu nzOpen nzTitle="Hóa đơn" nzIcon="form">
+        <ul>
+          <li nz-menu-item nzMatchRouter>
+            <a routerLink="/bills">Quản lý hóa đơn</a>
+          </li>
+        </ul>
+      </li>
+      <li class="d-center mt-15">
+        <button *ngIf="!isCollapsed" (click)="logout()" nz-button nzType="primary"  nzDanger>Đăng xuất</button>
+        <button *ngIf="isCollapsed" (click)="logout()" nz-button   nzDanger><i class="red" nz-icon nzType="logout" nzTheme="outline"></i></button>
+      </li>
+    </ul>
+   
+  </nz-sider>
+  <nz-layout>
+    <nz-header>
+      <div class="app-header" style="display: flex; justify-content: space-between;">
+        <div>
+          <span class="header-trigger" (click)="isCollapsed = !isCollapsed">
+            <i class="trigger" nz-icon [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"></i>
+          </span>
+        </div>
+        <div class="p-10 w-user-login">
+          <i nz-icon nzType="user" nzTheme="outline"></i> <span class="p-10">{{userName}}</span>
+        </div>
+      </div>
+    </nz-header>
+    <nz-content>
+      <div style="display: flex;">
+        <a href="/home" class="p-10"> <i nz-icon nzType="home"></i></a><span class="p-10">></span>
+        <nz-breadcrumb  class="p-10" [nzAutoGenerate]="true"></nz-breadcrumb>
+      </div>
+
+      <div class="inner-content" style="overflow-y: scroll;">
+        <router-outlet></router-outlet>
+      </div>
+    </nz-content>
+  </nz-layout>
+</nz-layout>

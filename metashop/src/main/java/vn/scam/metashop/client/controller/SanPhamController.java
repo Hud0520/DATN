@@ -39,7 +39,7 @@ public class SanPhamController extends BaseController {
 		Grid<SanPham> grid = new Grid<>();
 		try {
 			int pageSize = request.getParameter("pageSize") == null ? 20 : Integer.valueOf(request.getParameter("pageSize"));
-			int page = request.getParameter("page") == null ? 0 : Integer.valueOf(request.getParameter("page"));
+			int page = request.getParameter("page") == null ? 1 : Integer.valueOf(request.getParameter("page"));
 			String sortby = request.getParameter("sortby") == null ? "id" : request.getParameter("sortby");
 			String order = request.getParameter("order");
 			Sort sort = Sort.by(sortby);

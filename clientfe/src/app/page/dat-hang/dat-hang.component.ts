@@ -75,6 +75,7 @@ export class DatHangComponent implements OnInit {
       ct.soLuong= e.soLuong;
       return ct;
     });
+    this.donHang.tongTien = this.gioHang.tongTien;
     this.saveBill(this.donHang);
   }
 

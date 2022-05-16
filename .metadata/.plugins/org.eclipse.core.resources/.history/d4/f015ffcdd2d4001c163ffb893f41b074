@@ -1,0 +1,5 @@
+package vn.scam.metashop.dto;
+
+public class Auth {
+
+}

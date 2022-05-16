@@ -36,9 +36,9 @@ public class SanPhamControllerAdmin extends BaseController {
 	public ResponseEntity getListData(SanPhamDto object, HttpServletRequest request, HttpServletResponse response){
 		try {
 			int pageSize = request.getParameter("pageSize") == null ? 20 : Integer.valueOf(request.getParameter("pageSize"));
-			int page = request.getParameter("page") == null ? 0 : Integer.valueOf(request.getParameter("page"));
+			int page = request.getParameter("page") == null ? 1 : Integer.valueOf(request.getParameter("page"));
 			String sortby = request.getParameter("sortby") == null ? "id" : request.getParameter("sortby");
-			Pageable pageable = PageRequest.of(page,pageSize,Sort.by(sortby).descending());
+			Pageable pageable = PageRequest.of(page-1,pageSize,Sort.by(sortby).descending());
 			Page<SanPham> list= sanPhamServices.findAll(object, pageable);
 			Grid<SanPham> grid = new Grid<>();
 			grid.setTotal(list.getTotalElements());

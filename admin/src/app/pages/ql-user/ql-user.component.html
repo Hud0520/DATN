@@ -1,0 +1,114 @@
+<form nz-form [formGroup]="searchForm" class="ant-advanced-search-form">
+    <div nz-row [nzGutter]="24">
+        <div nz-col [nzSpan]="8">
+            <nz-form-item>
+                <nz-form-label>Tên sản phẩm</nz-form-label>
+                <nz-form-control>
+                    <input nz-input placeholder="Tên người dùng" formControlName="userName" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="8">
+            <nz-form-item>
+                <nz-form-label>Email</nz-form-label>
+                <nz-form-control>
+                    <input nz-input placeholder="Email" formControlName="email" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="8">
+            <nz-form-item>
+                <nz-form-label>Số điện thoại</nz-form-label>
+                <nz-form-control>
+                    <nz-input-number class="w-100" formControlName="phone" [nzMin]="0" [nzStep]="100000">
+                    </nz-input-number>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+    </div>
+    <div nz-row>
+        <div nz-col [nzSpan]="24" class="search-area">
+            <button nz-button (click)="search()" [nzType]="'primary'">Search</button>
+            <button nz-button (click)="resetForm()">Clear</button>
+        </div>
+    </div>
+</form>
+<div>
+    <nz-table nzShowSizeChanger [nzData]="listOfData" [nzFrontPagination]="false" [nzLoading]="loading"
+        [nzTotal]="total" [nzPageSize]="pageSize" [nzPageIndex]="pageIndex"
+        (nzQueryParams)="onQueryParamsChange($event)">
+        <thead>
+            <tr>
+                <th style="text-align: center;">STT</th>
+                <th nzColumnKey="userID" [nzSortFn]="true" style="text-align: center;">Mã KH</th>
+                <th style="text-align: center;">Tên</th>
+                <th style="text-align: center;">Email</th>
+                <th style="text-align: center;">Phone</th>
+                <th style=" display: flex; justify-content: space-around; align-items: center;"> <span>Thao tác</span>
+                    <a (click)="showModal(null,'INSERT')" title="Thêm mới"><i style="font-size: 20px;" nz-icon
+                            nzType="plus-circle" nzTheme="twotone"></i></a>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let data of listOfData; ; let i = index">
+                <td>{{i+1}}</td>
+                <td>{{data.userID}}</td>
+                <td>{{data.userName}}</td>
+                <td>{{data.userEmail}}</td>
+                <td>{{data.userPhone}}</td>
+                <td>
+                    <button (click)="showModal(data.userID,'EDIT')" class="m-5" nz-button
+                        nzType="default">Sửa</button>
+                    <nz-divider nzType="vertical"></nz-divider>
+                    <button (click)="delUser(data.userID)" class="m-5" nz-button nzType="primary"
+                        nzDanger>Xóa</button>
+                    <nz-divider nzType="vertical"></nz-divider>
+                </td>
+            </tr>
+        </tbody>
+    </nz-table>
+</div>
+
+<nz-modal class="w-700" [(nzVisible)]="isVisible" nzTitle="{{isEdit?'Chỉnh sửa':(isInsert?'Thêm mới':'Xem chi tiết')}}"
+    (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
+    <ng-container *nzModalContent>
+        <div class="f-container">
+            <form nz-form [formGroup]="userForm">
+                <nz-form-item>
+                    <nz-form-control nzErrorTip="Vui lòng nhập tên ">
+                        <div nz-row class="p-10">
+                            <div nz-col nzSpan="6">Tên người dùng</div>
+                            <div nz-col nzSpan="18">
+                                <nz-input-group>
+                                    <input type="text" nz-input formControlName="userName"
+                                        placeholder="Tên người dùng" />
+                                </nz-input-group>
+                            </div>
+                        </div>
+                       
+                        <div nz-row class="p-10">
+                            <div nz-col nzSpan="6">Số điện thoại</div>
+                            <div nz-col nzSpan="18">
+                                <nz-input-number class="w-100" formControlName="userPhone" [nzMin]="0"
+                                    [nzStep]="100000">
+                                </nz-input-number>
+                            </div>
+                        </div>
+                       
+                        <div nz-row class="p-10">
+                            <div nz-col nzSpan="6">Email</div>
+                            <div nz-col nzSpan="18">
+                                <nz-input-group>
+                                    <input type="text" nz-input formControlName="userEmail"
+                                        placeholder="Email" />
+                                </nz-input-group>
+                            </div>
+                        </div>
+                        
+                    </nz-form-control>
+                </nz-form-item>
+            </form>
+        </div>
+    </ng-container>
+</nz-modal>
