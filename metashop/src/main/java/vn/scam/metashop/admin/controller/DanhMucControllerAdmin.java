@@ -29,7 +29,7 @@ import vn.scam.metashop.repository.DanhMucRepo;
 public class DanhMucControllerAdmin extends BaseController {
 	@Autowired DanhMucRepo danhMucRepo;
 	@Autowired DanhMucServices danhMucServices;
-	@GetMapping(path = "/list-data")
+	@GetMapping(path = "")
 	public ResponseEntity getListData(DanhMuc object, HttpServletRequest request, HttpServletResponse response){
 		try {
 			int pageSize = request.getParameter("pageSize") == null ? 20 : Integer.valueOf(request.getParameter("pageSize"));

@@ -6,7 +6,8 @@ public class Constants {
 	public static final String SUCCESS_CODE = "00";
 	public static final String SERVICE_SUCCESS_CODE = "0";
 	public static final String SUCCESS_MSG = "Success";
-	
+	public static final Long LOGIN_FAIL = 1L;
+	public static final Long LOGIN_SUCCESS = 0L;
 	public static final String FORMAT_DATE_WEB = "dd/MM/yyyy";
 	public static final String FORMAT_DATE_DB = "yyyyMMdd";
 	public static final String FORMAT_DATETIME_WEB = "dd/MM/yyyy HH:mm";

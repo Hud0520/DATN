@@ -32,7 +32,7 @@ public class SanPhamControllerAdmin extends BaseController {
     @Autowired private SanPhamRepo sanPhamRepo;
     @Autowired private SanPhamServices sanPhamServices;
 
-    @GetMapping(path = "/list-data")
+    @GetMapping(path = "")
 	public ResponseEntity getListData(SanPhamDto object, HttpServletRequest request, HttpServletResponse response){
 		try {
 			int pageSize = request.getParameter("pageSize") == null ? 20 : Integer.valueOf(request.getParameter("pageSize"));

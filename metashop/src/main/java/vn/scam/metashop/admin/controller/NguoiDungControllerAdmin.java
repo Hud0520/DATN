@@ -14,9 +14,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import vn.scam.metashop.BaseController;
+import vn.scam.metashop.common.CommonUtils;
+import vn.scam.metashop.common.Constants;
 import vn.scam.metashop.services.NguoiDungServices;
 import vn.scam.metashop.dto.Grid;
 import vn.scam.metashop.dto.HashMD5;
@@ -32,6 +35,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class NguoiDungControllerAdmin extends BaseController {
     @Autowired private NguoiDungRepo nguoiDungRepo;
     @Autowired private NguoiDungServices nguoiDungServices;
+    @Autowired private CommonUtils commonUtils;
+    
     @PostMapping(path = "/add")
     public ResponseEntity<MetaResponse> create(NguoiDung object){
 		Optional<NguoiDung> exit = nguoiDungRepo.findByUserName(object.getUserName());
@@ -87,6 +92,22 @@ public class NguoiDungControllerAdmin extends BaseController {
 			return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
     }
+    
+    @PostMapping(value = "/login")
+	public ResponseEntity<MetaResponse> login(@RequestBody NguoiDung loginRequest) {
+		if (nguoiDungServices.loginAdmin(loginRequest) == Constants.LOGIN_SUCCESS) {
+			String auth;
+			try {
+				auth = commonUtils.createToken(loginRequest.getUserName(), loginRequest.getPassWord(), "1");
+			} catch (Exception e) {
+				return new ResponseEntity<MetaResponse>(new MetaResponse("false", ""), HttpStatus.OK);
+			}
+			return new ResponseEntity<MetaResponse>(new MetaResponse(auth, loginRequest.getUserName()),
+					HttpStatus.OK);
+		}
+		return new ResponseEntity<MetaResponse>(new MetaResponse("false", ""), HttpStatus.OK);
+
+	}
     
 
 }
