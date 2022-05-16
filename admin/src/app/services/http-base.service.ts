@@ -14,9 +14,10 @@ export class HttpBaseService {
     return throwError(error);
   }
   getHeader(): HttpHeaders {
-    var headers = { 'Content-Type': 'application/json' };
-    if (localStorage) {
-      var authorization = localStorage.getItem('Authorization');
+    
+    var headers = { 'Content-Type': 'application/json; charset=utf-8' };
+    if (sessionStorage) {
+      var authorization = sessionStorage.getItem('auth');
       if (authorization) {
         headers['Authorization'] = authorization;
       }
@@ -77,6 +78,7 @@ export class HttpBaseService {
       headers: this.getHeader(),
       withCredentials: true,
       params: params,
+      
     };
     url = this.serverPort + url;
     if (method == 'GET') {

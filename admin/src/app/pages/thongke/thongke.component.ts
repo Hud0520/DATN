@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { ChartType, ChartOptions, ChartDataSets } from 'chart.js';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
@@ -76,12 +77,19 @@ export class ThongkeComponent implements OnInit {
     private notification: NzNotificationService,
     private modal: NzModalService,
     private statisticService: StatisticService,
-    private billService:BillService
+    private billService:BillService,
+    private router : Router
   ) {
-    this.getStaticBrand();
-    this.getStaticCategory();
-    this.getDate();
-    this.getStaticBill();
+    let auth = sessionStorage.getItem('auth')||'';
+    if(auth == ''){
+      this.router.navigate(['/login']);
+    }else{
+      this.getStaticBrand();
+      this.getStaticCategory();
+      this.getDate();
+      this.getStaticBill();
+    }
+
   }
   userName = '';
   ngOnInit(): void {

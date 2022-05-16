@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { NzTableQueryParams } from 'ng-zorro-antd/table';
@@ -17,8 +18,14 @@ export class QlCategoryComponent implements OnInit {
     private categoryService: CategoryService,
     private notification: NzNotificationService,
     private modal: NzModalService,
-    private fb: FormBuilder
-  ) {}
+    private fb: FormBuilder,
+    private router : Router
+  ) {
+    let auth = sessionStorage.getItem('auth')||'';
+    if(auth == ''){
+      this.router.navigate(['/login']);
+    }
+  }
   isVisible = false;
   total = 1;
   loading = true;
@@ -130,6 +137,7 @@ export class QlCategoryComponent implements OnInit {
     this.controlArray.set('sortField', sortField);
     this.controlArray.set('sortOrder', sortOrder);
     // get category
+    debugger;
     this.categoryService
       .getCategories(this.controlArray)
       .subscribe(

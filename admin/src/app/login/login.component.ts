@@ -26,8 +26,8 @@ export class LoginComponent implements OnInit {
       this.loginService.loginAdmin(this.userName, this.passWord).subscribe(
         (data) => {
             if (data.errCode != 'false') {
-              localStorage.setItem('auth', data.data.auth);
-              localStorage.setItem('username', data.data.username);
+              sessionStorage.setItem('auth', data.data.auth);
+              sessionStorage.setItem('username', data.data.username);
               this.router.navigate(['/home']);
             }else{
               this.createNotification('error');

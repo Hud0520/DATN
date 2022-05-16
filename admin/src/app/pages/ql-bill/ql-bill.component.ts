@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { NzTableQueryParams } from 'ng-zorro-antd/table';
@@ -31,8 +32,14 @@ export class QlBillComponent implements OnInit {
     private productService: ProductService,
     private notification: NzNotificationService,
     private modal: NzModalService,
-    private billService: BillService
-  ) {}
+    private billService: BillService,
+    private router : Router
+  ) {
+    let auth = sessionStorage.getItem('auth')||'';
+    if(auth == ''){
+      this.router.navigate(['/login']);
+    }
+  }
 
   ngOnInit(): void {
     //form search

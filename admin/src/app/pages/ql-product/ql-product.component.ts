@@ -5,6 +5,7 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
+import { Router } from '@angular/router';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
@@ -50,8 +51,14 @@ export class QlProductComponent implements OnInit {
     private modal: NzModalService,
     private categoryService: CategoryService,
     private brandService: BrandService,
-    private msg: NzMessageService
-  ) {}
+    private msg: NzMessageService,
+    private router : Router
+  ) {
+    let auth = sessionStorage.getItem('auth')||'';
+    if(auth == ''){
+      this.router.navigate(['/login']);
+    }
+  }
 
   ngOnInit(): void {
     this.getBrands();

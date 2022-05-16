@@ -11,14 +11,13 @@ export class HomeComponent implements OnInit {
   constructor(private router: Router) { }
 
   ngOnInit(): void {
-    this.userName = localStorage.getItem('username')||'';
+    this.userName = sessionStorage.getItem('username')||'';
   }
   userName = '';
   isLogined = true;
   isCollapsed = false;
   logout(){
-    localStorage.removeItem('username');
-    localStorage.removeItem('auth');
+    sessionStorage.clear();
     this.router.navigate(['/login']);
   }
 }

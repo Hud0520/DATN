@@ -5,6 +5,7 @@ import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { NzTableQueryParams } from 'ng-zorro-antd/table';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-ql-brand',
   templateUrl: './ql-brand.component.html',
@@ -15,8 +16,14 @@ export class QlBrandComponent implements OnInit {
     private brandService: BrandService,
     private notification: NzNotificationService,
     private modal: NzModalService,
-    private fb: FormBuilder
-  ) {}
+    private fb: FormBuilder,
+    private router : Router
+  ) {
+    let auth = sessionStorage.getItem('auth')||'';
+    if(auth == ''){
+      this.router.navigate(['/login']);
+    }
+  }
   isVisible = false;
   total = 1;
   loading = true;
