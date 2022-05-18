@@ -3,7 +3,8 @@
     <thead>
         <tr>
             <th nzColumnKey="categoryName" [nzSortFn]="true" style="text-align: center;">Tên</th>
-            <th style=" display: flex; justify-content: space-around; align-items: center;"> <span>Thao tác</span> <a (click)="showModal(null)"
+            <th nzColumnKey="categoryName" [nzSortFn]="true" style="text-align: center;">Mô tả</th>
+            <th style=" display: flex; justify-content: space-around; align-items: center;" nzWidth="200px"> <span>Thao tác</span> <a (click)="showModal(null)"
                     title="Thêm mới"><i style="font-size: 20px;" nz-icon nzType="plus-circle" nzTheme="twotone"></i></a>
             </th>
         </tr>
@@ -11,10 +12,11 @@
     <tbody>
         <tr *ngFor="let data of listOfData">
             <td>{{ data.tenDanhMuc }}</td>
+            <td>{{ data.moTa }}</td>
             <td>
-                <button (click)="showModal(data.id)" class="m-5" nz-button nzType="default">Sửa</button>
+                <button (click)="showModal(data.id)" class="m-5" nz-button nzType="default"><i nz-icon nzType="edit" nzTheme="outline"></i></button>
                 <nz-divider nzType="vertical"></nz-divider>
-                <button (click)="delCategory(data.id)" class="m-5" nz-button nzType="primary" nzDanger>Xóa</button>
+                <button (click)="delCategory(data.id)" class="m-5" nz-button nzType="primary" nzDanger><i nz-icon nzType="delete" nzTheme="outline"></i></button>
                 <nz-divider nzType="vertical"></nz-divider>
             </td>
         </tr>
@@ -34,7 +36,18 @@
                             </nz-input-group>
                         </div>
                     </div>
-
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-control >
+                    <div nz-row>
+                        <div nz-col nzSpan="12">Mô tả</div>
+                        <div nz-col nzSpan="12">
+                            <nz-input-group>
+                                <textarea nz-input placeholder="" formControlName="categoryDesc"  [nzAutosize]="{ minRows: 2, maxRows: 6 }"></textarea>
+                            </nz-input-group>
+                        </div>
+                    </div>
                 </nz-form-control>
             </nz-form-item>
         </form>

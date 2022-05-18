@@ -40,7 +40,8 @@ export class QlCategoryComponent implements OnInit {
     // this.getCategories(this.pageIndex, this.pageSize, null, null);
     this.validateForm = this.fb.group({
       categoryId: [null],
-      categoryName: [null, [Validators.required]]
+      categoryName: [null, [Validators.required]],
+      categoryDesc:[null]
     });
   }
   showModal(id): void {
@@ -51,11 +52,12 @@ export class QlCategoryComponent implements OnInit {
         if (item.id == id){
           this.validateForm.controls.categoryId.setValue(item.id);
           this.validateForm.controls.categoryName.setValue(item.tenDanhMuc);
+          this.validateForm.controls.categoryDesc.setValue(item.moTa);
         } 
       });
     }else{
       this.validateForm.controls.categoryId.setValue(null);
-      this.validateForm.controls.categoryName.setValue('');
+
     }
   }
 
@@ -68,13 +70,19 @@ export class QlCategoryComponent implements OnInit {
     }
     const categoryId = this.validateForm.controls.categoryId.value;
     const categoryName = this.validateForm.controls.categoryName.value;
+    const categoryDesc = this.validateForm.controls.categoryDesc.value;
     if(categoryId && categoryName){
       this.category.id= categoryId;
       this.category.tenDanhMuc = categoryName;
+      this.category.moTa = categoryDesc;
       
       this.categoryService.saveCategory(this.category).subscribe(
         (data) => {
-          this.createNotification('success', 'Sửa thành công!', '');
+          if(data.errCode == '00'){
+            this.createNotification('success', 'Sửa thành công!', '');
+          }else{
+            this.createNotification('error', 'Lỗi', data.errMsg);
+          }
         },
         (error) => {
           this.createNotification(
@@ -91,10 +99,14 @@ export class QlCategoryComponent implements OnInit {
     }else if(categoryName){
       this.category.id= null;
       this.category.tenDanhMuc = categoryName;
-      
-      this.categoryService.saveCategory(this.category).subscribe(
+      this.category.moTa = categoryDesc;
+      this.categoryService.addCategory(this.category).subscribe(
         (data) => {
-          this.createNotification('success', 'Thêm thành công!', '');
+          if(data.errCode == '00'){
+            this.createNotification('success', 'Thêm thành công!', '');
+          }else{
+            this.createNotification('error', 'Lỗi', data.errMsg);
+          }
         },
         (error) => {
           this.createNotification(
@@ -134,8 +146,8 @@ export class QlCategoryComponent implements OnInit {
   ) {
     this.controlArray.set('page', pageIndex);
     this.controlArray.set('pageSize', pageSize);
-    this.controlArray.set('sortField', sortField);
-    this.controlArray.set('sortOrder', sortOrder);
+    this.controlArray.set('sortBy', sortField);
+    this.controlArray.set('order', sortOrder);
     // get category
     debugger;
     this.categoryService
@@ -159,6 +171,7 @@ export class QlCategoryComponent implements OnInit {
   }
 
   delCategory(id) {
+    this.category.id= id;
     this.modal.confirm({
       nzTitle: 'Bạn có chắc chắn muốn xóa?',
       nzContent: '',
@@ -166,9 +179,15 @@ export class QlCategoryComponent implements OnInit {
       nzOkType: 'primary',
       nzOkDanger: true,
       nzOnOk: () =>
-        this.categoryService.deleteCategory(id).subscribe(
+        this.categoryService.deleteCategory(this.category).subscribe(
           (data) => {
-            this.createNotification('success', 'Xoá thành công!', '');
+            debugger
+            if(data.errCode =='00'){
+              this.createNotification('success', 'Xoá thành công!', '');
+            }else{
+              this.createNotification('error',"Lỗi ", data.errMsg);
+            }
+            
           },
           (error) => {
             this.createNotification(

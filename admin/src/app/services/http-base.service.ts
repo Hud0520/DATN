@@ -41,7 +41,16 @@ export class HttpBaseService {
     return this.callApiBaseGetWay('POST', url, null, body);
   }
   postImage<T>(url: string, body: any): Observable<T> {
+    var headers = { };
+    if (sessionStorage) {
+      var authorization = sessionStorage.getItem('auth');
+      if (authorization) {
+        headers['Authorization'] = authorization;
+      }
+    }
+
     var httpOptions: Object = {
+      headers: new HttpHeaders(headers),
       withCredentials: true,
     };
     url = this.serverPort + url;

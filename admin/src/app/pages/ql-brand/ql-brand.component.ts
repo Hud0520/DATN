@@ -40,6 +40,7 @@ export class QlBrandComponent implements OnInit {
     this.validateForm = this.fb.group({
       brandId: [null],
       brandName: [null, [Validators.required]],
+      tenVanTat: [null, [Validators.required]],
     });
   }
   showModal(id): void {
@@ -50,11 +51,13 @@ export class QlBrandComponent implements OnInit {
         if (item.id == id) {
           this.validateForm.controls.brandId.setValue(item.id);
           this.validateForm.controls.brandName.setValue(item.tenNhanHieu);
+          this.validateForm.controls.tenVanTat.setValue(item.tenVanTat);
         }
       });
     } else {
       this.validateForm.controls.brandId.setValue(null);
       this.validateForm.controls.brandName.setValue('');
+      this.validateForm.controls.tenVanTat.setValue('');
     }
   }
 
@@ -63,17 +66,24 @@ export class QlBrandComponent implements OnInit {
       if (this.validateForm.controls.hasOwnProperty(i)) {
         this.validateForm.controls[i].markAsDirty();
         this.validateForm.controls[i].updateValueAndValidity();
+        this.validateForm.controls[i].updateValueAndValidity();
       }
     }
     const brandId = this.validateForm.controls.brandId.value;
     const brandName = this.validateForm.controls.brandName.value;
+    const tenVanTat = this.validateForm.controls.tenVanTat.value;
     if (brandName && brandId) {
       this.brand.id = brandId;
       this.brand.tenNhanHieu = brandName;
+      this.brand.tenVanTat = tenVanTat
 
       this.brandService.saveBrand(this.brand).subscribe(
         (data) => {
-          this.createNotification('success', 'Sửa thành công!', '');
+          if(data.errCode == '00'){
+            this.createNotification('success', 'Sửa thành công!', '');
+          }else{
+            this.createNotification('error', 'Lỗi', data.errMsg);
+          }
         },
         (error) => {
           this.createNotification(
@@ -93,7 +103,11 @@ export class QlBrandComponent implements OnInit {
 
       this.brandService.saveBrand(this.brand).subscribe(
         (data) => {
-          this.createNotification('success', 'Thêm thành công!', '');
+          if(data.errCode == '00'){
+            this.createNotification('success', 'Thêm thành công!', '');
+          }else{
+            this.createNotification('error', 'Lỗi', data.errMsg);
+          }
         },
         (error) => {
           this.createNotification(
@@ -132,16 +146,16 @@ export class QlBrandComponent implements OnInit {
     sortOrder: string | null
   ) {
     // get brands
-    this.controlArray.set('pageIndex', pageIndex);
+    this.controlArray.set('page', pageIndex);
     this.controlArray.set('pageSize', pageSize);
-    this.controlArray.set('sortField', sortField);
-    this.controlArray.set('sortOrder', sortOrder);
+    this.controlArray.set('sortBy', sortField);
+    this.controlArray.set('order', sortOrder);
     this.brandService.getBrands(this.controlArray).subscribe(
       (data) => {
-        if (data && data.results) {
+        if (data && data.result) {
           this.loading = false;
-          this.listOfData = data.results;
-          this.total = data.rowCount;
+          this.listOfData = data.result;
+          this.total = data.total;
         }
       },
       (error) => {
@@ -164,7 +178,11 @@ export class QlBrandComponent implements OnInit {
       nzOnOk: () =>
         this.brandService.deleteBrand(id).subscribe(
           (data) => {
-            this.createNotification('success', 'Xoá thành công!', '');
+            if(data.errCode =='00'){
+              this.createNotification('success', 'Xoá thành công!', '');
+            }else{
+              this.createNotification('error',"Lỗi ", data.errMsg);
+            }
           },
           (error) => {
             this.createNotification(

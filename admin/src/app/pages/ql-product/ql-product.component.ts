@@ -31,7 +31,7 @@ export class QlProductComponent implements OnInit {
   total = 1;
   loading = true;
   pageSize = 5;
-  imageUrl: string = null;
+  imageUrl: string[] = [];
   pageIndex = 1;
   listOfData: Product[] = [];
   listOfCategory: Category[] = [];
@@ -41,8 +41,8 @@ export class QlProductComponent implements OnInit {
   isInsert = false;
   isView = false;
   controlArray: Map<string, any> = new Map<string, any>();
-  imageProduct: string;
-  fileToUpload: File = null;
+  imageProduct: string[] = [];
+  fileToUpload: File[] = [];
 
   constructor(
     private fb: FormBuilder,
@@ -76,16 +76,20 @@ export class QlProductComponent implements OnInit {
     this.productForm = this.fb.group({
       productID: [null],
       productName: [null, [Validators.required]],
-      productImage: [null, [Validators.required]],
       category1: [null, [Validators.required]],
       brand1: [null, [Validators.required]],
       productPrice: [0, [Validators.required]],
-      productDescription: [null],
-      productImportPrice: [0, [Validators.required]],
+      thongSo: [null],
+      chiTiet: [null],
       productQuantily: [0, [Validators.required]],
-      productDimensions: [null],
-      productWeight: [0],
-      productMaterial: [null],
+      cauHinh: [null],
+      phuKien: [0],
+      tomTat: [null],
+      anh1:[null],
+      anh2:[null],
+      anh3:[null],
+      anh4:[null],
+      baoHanh: [null]
     });
   }
   showModal(id, action): void {
@@ -99,7 +103,6 @@ export class QlProductComponent implements OnInit {
         if (item.id == id) {
           this.productForm.controls.productID.setValue(item.id);
           this.productForm.controls.productName.setValue(item.tenSanPham);
-          this.imageProduct = item.anh1;
           this.productForm.controls.category1.setValue(
             item.danhMuc
           );
@@ -107,22 +110,26 @@ export class QlProductComponent implements OnInit {
             item.nhanHieu
           );
           this.productForm.controls.productPrice.setValue(item.gia);
-          this.productForm.controls.productDescription.setValue(
-            item.chiTiet
+          this.productForm.controls.thongSo.setValue(
+            item.thongSo
           );
-          this.productForm.controls.productImportPrice.setValue(
-            item.gia
+          this.productForm.controls.chiTiet.setValue(
+            item.chiTiet
           );
           this.productForm.controls.productQuantily.setValue(
             item.soLuong
           );
-          this.productForm.controls.productDimensions.setValue(
+          this.productForm.controls.cauHinh.setValue(
             item.cauHinh
           );
-          this.productForm.controls.productWeight.setValue(item.tomTat);
-          this.productForm.controls.productMaterial.setValue(
-            item.tomTat
+          this.productForm.controls.tomTat.setValue(item.tomTat);
+          this.productForm.controls.phuKien.setValue(
+            item.phuKien
           );
+          this.imageProduct[0] = item.anh1;
+          this.imageProduct[1] = item.anh2;
+          this.imageProduct[2] = item.anh3;
+          this.imageProduct[3] = item.anh4;
         }
       });
     }
@@ -134,7 +141,6 @@ export class QlProductComponent implements OnInit {
         if (item.id == id) {
           this.productForm.controls.productID.setValue(item.id);
           this.productForm.controls.productName.setValue(item.tenSanPham);
-          this.imageProduct = item.anh1;
           this.productForm.controls.category1.setValue(
             item.danhMuc
           );
@@ -142,21 +148,21 @@ export class QlProductComponent implements OnInit {
             item.nhanHieu
           );
           this.productForm.controls.productPrice.setValue(item.gia);
-          this.productForm.controls.productDescription.setValue(
-            item.chiTiet
+          this.productForm.controls.thongSo.setValue(
+            item.thongSo
           );
-          this.productForm.controls.productImportPrice.setValue(
-            item.gia
+          this.productForm.controls.chiTiet.setValue(
+            item.chiTiet
           );
           this.productForm.controls.productQuantily.setValue(
             item.soLuong
           );
-          this.productForm.controls.productDimensions.setValue(
+          this.productForm.controls.cauHinh.setValue(
             item.cauHinh
           );
-          this.productForm.controls.productWeight.setValue(item.tomTat);
-          this.productForm.controls.productMaterial.setValue(
-            item.tomTat
+          this.productForm.controls.tomTat.setValue(item.tomTat);
+          this.productForm.controls.phuKien.setValue(
+            item.phuKien
           );
         }
       });
@@ -167,16 +173,30 @@ export class QlProductComponent implements OnInit {
       this.isView = false;
 
       this.productForm.controls.productID.setValue(null);
-      this.productForm.controls.productName.setValue(null);
-      this.productForm.controls.category1.setValue(null);
-      this.productForm.controls.brand1.setValue(null);
-      this.productForm.controls.productPrice.setValue(0);
-      this.productForm.controls.productDescription.setValue(null);
-      this.productForm.controls.productImportPrice.setValue(0);
-      this.productForm.controls.productQuantily.setValue(0);
-      this.productForm.controls.productDimensions.setValue(null);
-      this.productForm.controls.productWeight.setValue(0);
-      this.productForm.controls.productMaterial.setValue(null);
+          this.productForm.controls.productName.setValue(null);
+          this.productForm.controls.category1.setValue(
+            null
+          );
+          this.productForm.controls.brand1.setValue(
+            null
+          );
+          this.productForm.controls.productPrice.setValue(0);
+          this.productForm.controls.thongSo.setValue(
+            null
+          );
+          this.productForm.controls.chiTiet.setValue(
+            null
+          );
+          this.productForm.controls.productQuantily.setValue(
+            0
+          );
+          this.productForm.controls.cauHinh.setValue(
+            null
+          );
+          this.productForm.controls.tomTat.setValue(null);
+          this.productForm.controls.phuKien.setValue(
+            null
+          );
     }
   }
 
@@ -196,28 +216,31 @@ export class QlProductComponent implements OnInit {
     this.product.danhMuc = this.productForm.controls.category1.value,
 
     this.product.nhanHieu = this.productForm.controls.brand1.value,
-    this.product.anh1 = this.imageProduct;
-    this.product.gia =
-      this.productForm.controls.productImportPrice.value;
+    this.product.anh1 = this.imageProduct[0];
+    this.product.anh2 = this.imageProduct[1];
+    this.product.anh3 = this.imageProduct[2];
+    this.product.anh4 = this.imageProduct[3];
     this.product.chiTiet =
-      this.productForm.controls.productDescription.value;
+      this.productForm.controls.chiTiet.value;
     this.product.gia = this.productForm.controls.productPrice.value;
     this.product.soLuong =
       this.productForm.controls.productQuantily.value;
     this.product.tomTat =
-      this.productForm.controls.productDimensions.value;
-    this.product.tomTat = this.productForm.controls.productWeight.value;
-    this.product.tomTat =
-      this.productForm.controls.productMaterial.value;
+      this.productForm.controls.tomTat.value;
+      this.product.thongSo =
+      this.productForm.controls.thongSo.value;
+      this.product.cauHinh = this.productForm.controls.cauHinh.value;
+      this.product.phuKien = this.productForm.controls.phuKien.value;
     console.log(this.product);
     console.log(this.fileToUpload);
     this.productService.saveProduct(this.product).subscribe(
       (data) => {
-        if (data && data.result) {
-          if (data.result.productID && this.fileToUpload) {
+        debugger;
+        if (data.errCode =="00") {
+          if (data.data.id && this.fileToUpload) {
             console.log('vao');
             this.productService
-              .postImage(data.result.productID, this.fileToUpload)
+              .postImage(data.data.id, this.fileToUpload)
               .subscribe(
                 (data) => {},
                 (error) => {
@@ -262,12 +285,12 @@ export class QlProductComponent implements OnInit {
       this.searchForm.controls.priceTo.value == 0
         ? null
         : this.searchForm.controls.priceTo.value;
-    this.controlArray.set('productID', id);
-    this.controlArray.set('productName', name);
-    this.controlArray.set('categoryID', category);
-    this.controlArray.set('brandID', brand);
-    this.controlArray.set('priceFrom', priceFrom);
-    this.controlArray.set('priceTo', priceTo);
+    this.controlArray.set('id', id);
+    this.controlArray.set('tenSanPham', name);
+    this.controlArray.set('danhMuc', category);
+    this.controlArray.set('nhanHieu', brand);
+    this.controlArray.set('giatu', priceFrom);
+    this.controlArray.set('giaden', priceTo);
     this.getProducts(this.pageIndex, this.pageSize, null, null);
   }
 
@@ -295,8 +318,8 @@ export class QlProductComponent implements OnInit {
   ) {
     this.controlArray.set('page', pageIndex);
     this.controlArray.set('pageSize', pageSize);
-    this.controlArray.set('sortField', sortField);
-    this.controlArray.set('sortOrder', sortOrder);
+    this.controlArray.set('sortBy', sortField);
+    this.controlArray.set('order', sortOrder);
     // get product
     this.productService.getProducts(this.controlArray).subscribe(
       (data) => {
@@ -376,10 +399,10 @@ export class QlProductComponent implements OnInit {
       }
     );
   }
-  onFileImageSelect(file: FileList) {
-    this.fileToUpload = file.item(0);
+  onFileImageSelect(file: FileList,index : number) {
+    this.fileToUpload[index] = file.item(0);
     console.log(this.fileToUpload);
-    if (!this.checkImgUpload(this.fileToUpload.name)) {
+    if (!this.checkImgUpload(this.fileToUpload[index].name)) {
       this.createNotification(
         'warning',
         'File không hợp lệ!',
@@ -389,9 +412,9 @@ export class QlProductComponent implements OnInit {
       //show image preview
       var reader = new FileReader();
       reader.onload = (event: any) => {
-        this.imageUrl = event.target.result;
+        this.imageUrl[index] = event.target.result;
       };
-      reader.readAsDataURL(this.fileToUpload);
+      reader.readAsDataURL(this.fileToUpload[index]);
     }
   }
   checkImgUpload(name: string) {

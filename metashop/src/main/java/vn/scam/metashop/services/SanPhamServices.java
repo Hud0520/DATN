@@ -29,6 +29,9 @@ public class SanPhamServices {
 			public Predicate toPredicate(Root<SanPham> root, CriteriaQuery<?> query,
 					CriteriaBuilder criteriaBuilder) {
 				List<Predicate> pre = new ArrayList<>();
+				if(filter.getId() != null && !"".equals(filter.getId())) {
+					pre.add(criteriaBuilder.equal(root.get("id"), filter.getId()));
+				}
 				if(filter.getTenSanPham() != null && !"".equals(filter.getTenSanPham().trim())) {
 					pre.add(criteriaBuilder.like(root.get("tenSanPham"), "%"+filter.getTenSanPham()+"%"));
 				}
@@ -51,4 +54,6 @@ public class SanPhamServices {
         
         return list;
     }
+    
+    
 }

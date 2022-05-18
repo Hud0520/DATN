@@ -9,6 +9,7 @@ import { QlCategoryComponent } from './pages/ql-category/ql-category.component';
 import { QlProductComponent } from './pages/ql-product/ql-product.component';
 import { QlUserComponent } from './pages/ql-user/ql-user.component';
 import { ThongkeComponent } from './pages/thongke/thongke.component';
+import { WelcomeComponent } from './pages/welcome/welcome.component';
 
 const routes: Routes = [
   // { path: '', pathMatch: 'full', redirectTo: '/login' },
@@ -23,7 +24,7 @@ const routes: Routes = [
       { path: '', redirectTo: '/login', pathMatch: 'full' },
       {
         path: 'home',
-        component: ThongkeComponent,
+        component: WelcomeComponent,
         data: {
           breadcrumb: 'Thống kê',
         },

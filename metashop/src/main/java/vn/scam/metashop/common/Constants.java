@@ -2,6 +2,8 @@ package vn.scam.metashop.common;
 
 public class Constants {
 	public static final String SESSION_CURRENT_USER = "session_current_user";
+	public static final String ROOT_IMAGES_BACKEND = "D:/DOAN/admin/src/assets/img/";
+	public static final String ROOT_IMAGES_FRONTEND = "D:/DOAN/clientfe/src/assets/img";
 	
 	public static final String SUCCESS_CODE = "00";
 	public static final String SERVICE_SUCCESS_CODE = "0";

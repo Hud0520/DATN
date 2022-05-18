@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import vn.scam.metashop.BaseController;
@@ -49,7 +50,7 @@ public class DanhMucControllerAdmin extends BaseController {
 	}
 	
 	@PostMapping(path = "/add")
-	public ResponseEntity<MetaResponse> create(DanhMuc object, HttpServletRequest request, HttpServletResponse response){
+	public ResponseEntity<MetaResponse> create(@RequestBody DanhMuc object, HttpServletRequest request, HttpServletResponse response){
 		Optional<DanhMuc> exit = danhMucRepo.findByTenDanhMuc(object.getTenDanhMuc());
 		if(exit.isPresent()) {
 			return errorResponse("Danh mục đã tồn tại");
@@ -59,7 +60,7 @@ public class DanhMucControllerAdmin extends BaseController {
 		return successResponse();	
 	}
 	@PostMapping(path = "/update")
-	public ResponseEntity<MetaResponse> update(DanhMuc object, HttpServletRequest request, HttpServletResponse response){
+	public ResponseEntity<MetaResponse> update(@RequestBody DanhMuc object, HttpServletRequest request, HttpServletResponse response){
 		Optional<DanhMuc> exit = danhMucRepo.findById(object.getId());
 		if(exit.isPresent()) {
 			DanhMuc current = exit.get();
@@ -71,8 +72,8 @@ public class DanhMucControllerAdmin extends BaseController {
 		}	
 	}
 	@PostMapping(path = "/delete")
-	public ResponseEntity<MetaResponse> delete(Integer id, HttpServletRequest request, HttpServletResponse response) {
-		try{danhMucRepo.deleteById(id);
+	public ResponseEntity<MetaResponse> delete(@RequestBody DanhMuc object, HttpServletRequest request, HttpServletResponse response) {
+		try{danhMucRepo.deleteById(object.getId());
 			return successResponse();
 		}catch (Exception e) {
 			// TODO: handle exception

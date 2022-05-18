@@ -111,8 +111,8 @@ export class QlBillComponent implements OnInit {
   ) {
     this.controlArray.set('page', pageIndex);
     this.controlArray.set('pageSize', pageSize);
-    this.controlArray.set('sortField', sortField);
-    this.controlArray.set('sortOrder', sortOrder);
+    this.controlArray.set('sortBy', sortField);
+    this.controlArray.set('order', sortOrder);
     // get bill
     this.billService.getBills(this.controlArray).subscribe(
       (data) => {

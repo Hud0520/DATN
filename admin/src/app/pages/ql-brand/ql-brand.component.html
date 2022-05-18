@@ -3,6 +3,7 @@
     <thead>
         <tr>
             <th nzColumnKey="brandName" [nzSortFn]="true" style="text-align: center;">Tên</th>
+            <th nzColumnKey="brandName" [nzSortFn]="true" style="text-align: center;">Tên vắn tắt</th>
             <th style=" display: flex; justify-content: space-around; align-items: center;"> <span>Thao tác</span> <a (click)="showModal(null)"
                     title="Thêm mới"><i style="font-size: 20px;" nz-icon nzType="plus-circle" nzTheme="twotone"></i></a>
             </th>
@@ -10,11 +11,12 @@
     </thead>
     <tbody>
         <tr *ngFor="let data of listOfData">
-            <td>{{ data.brandName }}</td>
+            <td>{{ data.tenNhanHieu }}</td>
+            <td>{{ data.tenVanTat }}</td>
             <td>
-                <button (click)="showModal(data.brandID)" class="m-5" nz-button nzType="default">Sửa</button>
+                <button (click)="showModal(data.id)" class="m-5" nz-button nzType="default"><i nz-icon nzType="edit" nzTheme="outline"></i></button>
                 <nz-divider nzType="vertical"></nz-divider>
-                <button (click)="delBrand(data.brandID)" class="m-5" nz-button nzType="primary" nzDanger>Xóa</button>
+                <button (click)="delBrand(data.id)" class="m-5" nz-button nzType="primary" nzDanger><i nz-icon nzType="delete" nzTheme="outline"></i></button>
                 <nz-divider nzType="vertical"></nz-divider>
             </td>
         </tr>
@@ -34,7 +36,18 @@
                             </nz-input-group>
                         </div>
                     </div>
-
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-control nzErrorTip="Vui lòng nhập tên vắn tắt!">
+                    <div nz-row>
+                        <div nz-col nzSpan="12">Tên vắn tắt</div>
+                        <div nz-col nzSpan="12">
+                            <nz-input-group>
+                                <input type="text" nz-input formControlName="tenVanTat" placeholder="Tên vắn tắt" />
+                            </nz-input-group>
+                        </div>
+                    </div>
                 </nz-form-control>
             </nz-form-item>
         </form>

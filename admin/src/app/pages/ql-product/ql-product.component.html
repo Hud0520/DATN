@@ -67,18 +67,18 @@
 </form>
 <div>
     <nz-table nzShowSizeChanger [nzData]="listOfData" [nzFrontPagination]="false" [nzLoading]="loading"
-        [nzTotal]="total" [nzPageSize]="pageSize" [nzPageIndex]="pageIndex"
+        [nzTotal]="total" [nzPageSize]="pageSize" [nzPageIndex]="pageIndex" [nzScroll]="{ x: '1100px' }"
         (nzQueryParams)="onQueryParamsChange($event)">
         <thead>
             <tr>
-                <th style="text-align: center;">STT</th>
-                <th nzColumnKey="productID" [nzSortFn]="true" style="text-align: center;">Mã SP</th>
-                <th style="text-align: center;">Tên</th>
-                <th style="text-align: center;">Thương hiệu</th>
-                <th style="text-align: center;">Hình ảnh</th>
-                <th nzColumnKey="productPrice" [nzSortFn]="true" style="text-align: center;">Giá bán</th>
-                <th nzColumnKey="productQuantily" [nzSortFn]="true" style="text-align: center;">Số lượng</th>
-                <th style=" display: flex; justify-content: space-around; align-items: center;"> <span>Thao tác</span>
+                <th style="text-align: center;" nzWidth="30">STT</th>
+                <th nzColumnKey="productID"  [nzSortFn]="true" style="text-align: center;">Mã SP</th>
+                <th style="text-align: center;" nzWidth="200px">Tên</th>
+                <th style="text-align: center;" >Thương hiệu</th>
+                <th style="text-align: center;" >Hình ảnh</th>
+                <th nzColumnKey="productPrice" [nzSortFn]="true" style="text-align: center;" >Giá bán</th>
+                <th nzColumnKey="productQuantily" [nzSortFn]="true" style="text-align: center;" >Số lượng</th>
+                <th style=" display: flex; justify-content: space-around; align-items: center;" nzWidth="200px"> <span>Thao tác</span>
                     <a (click)="showModal(null,'INSERT')" title="Thêm mới"><i style="font-size: 20px;" nz-icon
                             nzType="plus-circle" nzTheme="twotone"></i></a>
                 </th>
@@ -89,22 +89,23 @@
                 <td>{{i+1}}</td>
                 <td>{{data.id}}</td>
                 <td>{{data.tenSanPham}}</td>
-                <td>{{data.danhMuc}}</td>
+                <td>{{data.nhanHieu}}</td>
                 <td class="p-10">
                     <img nz-image width="100px" height="100px" nzSrc="assets/img/{{data.anh1}}"
-                        alt="{{data.tenSanPham}">
+                        alt="{{data.tenSanPham}"/>
 
                 </td>
                 <td>{{data.gia| number}}</td>
                 <td>{{data.soLuong| number}}</td>
                 <td>
                     <button (click)="showModal(data.id,'VIEW')" class="m-5" nz-button nzType="primary"><i nz-icon nzType="eye" nzTheme="outline"></i></button>
+                    <nz-divider nzType="vertical"></nz-divider>
                     <button (click)="showModal(data.id,'EDIT')" class="m-5" nz-button
                         nzType="default"><i nz-icon nzType="edit" nzTheme="outline"></i></button>
                     <nz-divider nzType="vertical"></nz-divider>
                     <button (click)="delProduct(data.id)" class="m-5" nz-button nzType="primary"
                         nzDanger><i nz-icon nzType="delete" nzTheme="outline"></i></button>
-                    <nz-divider nzType="vertical"></nz-divider>
+                    
                 </td>
             </tr>
         </tbody>
@@ -128,55 +129,51 @@
                             </div>
                         </div>
                         <div nz-row class="p-10">
-                            <div nz-col nzSpan="6">Hình ảnh</div>
-                            <div nz-col nzSpan="18">
-                                <img *ngIf="imageUrl" nz-image width="100px" height="100px"
-                                nzSrc="{{imageUrl}}"  />
-                                <input *ngIf="isInsert || isEdit" type="file" #Image accept="image/*" class="hidden" name="avatar"
-                                    (change)="onFileImageSelect($event.target.files)" multiple id="img-change">
-                                <img *ngIf="isView" nz-image width="100px" height="100px"
-                                    nzSrc="../../assets/{{imageProduct}}"  />
-                            </div>
-                        </div>
-                        <div nz-row class="p-10">
                             <div nz-col nzSpan="6">Thương hiệu</div>
                             <div nz-col nzSpan="18">
                                 <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Thương hiệu"
                                     formControlName="brand1">
-                                    <nz-option *ngFor="let brand of listOfBrand" nzLabel="{{brand.brandName}}"
-                                        nzValue="{{brand.brandID}}"></nz-option>
+                                    <nz-option *ngFor="let brand of listOfBrand" nzLabel="{{brand.tenNhanHieu}}"
+                                        nzValue="{{brand.tenVanTat}}"></nz-option>
                                 </nz-select>
                             </div>
                         </div>
                         <div nz-row class="p-10">
-                            <div nz-col nzSpan="6">Thể loại</div>
+                            <div nz-col nzSpan="6">Danh mục</div>
                             <div nz-col nzSpan="18">
                                 <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Thể loại"
                                     formControlName="category1">
                                     <nz-option *ngFor="let category of listOfCategory"
-                                        nzLabel="{{category.categoryName}}" nzValue="{{category.categoryID}}">
+                                        nzLabel="{{category.tenDanhMuc}}" nzValue="{{category.id}}">
                                     </nz-option>
                                 </nz-select>
                             </div>
                         </div>
                         <div nz-row class="p-10">
-                            <div nz-col nzSpan="6">Mô tả</div>
+                            <div nz-col nzSpan="6">Bảo hành</div>
                             <div nz-col nzSpan="18">
-                                <textarea rows="4" nz-input formControlName="productDescription"></textarea>
+                                <nz-input-group>
+                                    <input type="text" nz-input formControlName="baoHanh"
+                                        placeholder="Bảo hành" />
+                                </nz-input-group>
+                            </div>
+                        </div>
+                        <div nz-row class="p-10">
+                            <div nz-col nzSpan="6">Thông số</div>
+                            <div nz-col nzSpan="18">
+                                <textarea rows="4" nz-input formControlName="thongSo"></textarea>
+                            </div>
+                        </div>
+                        <div nz-row class="p-10">
+                            <div nz-col nzSpan="6">Chi tiết</div>
+                            <div nz-col nzSpan="18">
+                                <textarea rows="4" nz-input formControlName="chiTiet"></textarea>
                             </div>
                         </div>
                         <div nz-row class="p-10">
                             <div nz-col nzSpan="6">Giá bán</div>
                             <div nz-col nzSpan="18">
                                 <nz-input-number class="w-100" formControlName="productPrice" [nzMin]="0"
-                                    [nzStep]="100000">
-                                </nz-input-number>
-                            </div>
-                        </div>
-                        <div nz-row class="p-10">
-                            <div nz-col nzSpan="6">Giá nhập</div>
-                            <div nz-col nzSpan="18">
-                                <nz-input-number class="w-100" formControlName="productImportPrice" [nzMin]="0"
                                     [nzStep]="100000">
                                 </nz-input-number>
                             </div>
@@ -190,22 +187,65 @@
                             </div>
                         </div>
                         <div nz-row class="p-10">
-                            <div nz-col nzSpan="6">Kích thước</div>
+                            <div nz-col nzSpan="6">Cấu hình</div>
                             <div nz-col nzSpan="18">
-                                <input nz-input placeholder="Kích thước" formControlName="productDimensions" />
+                                <input nz-input placeholder="Cấu hình" formControlName="cauHinh" />
                             </div>
                         </div>
                         <div nz-row class="p-10">
-                            <div nz-col nzSpan="6">Cân nặng</div>
+                            <div nz-col nzSpan="6">Phụ kiện</div>
                             <div nz-col nzSpan="18">
-                                <nz-input-number class="w-100" formControlName="productWeight" [nzMin]="0" [nzStep]="1">
-                                </nz-input-number>
+                                <textarea rows="4" nz-input formControlName="phuKien"></textarea>
                             </div>
                         </div>
                         <div nz-row class="p-10">
-                            <div nz-col nzSpan="6">Chất liệu</div>
+                            <div nz-col nzSpan="6">Tóm tắt</div>
                             <div nz-col nzSpan="18">
-                                <input nz-input placeholder="Chất liệu" formControlName="productMaterial" />
+                                <textarea rows="4" nz-input formControlName="tomTat"></textarea>
+                            </div>
+                        </div>
+                        <div nz-row class="p-10">
+                            <div nz-col nzSpan="6">Hình ảnh 1</div>
+                            <div nz-col nzSpan="18">
+                                <img *ngIf="imageUrl[0]" nz-image width="100px" height="100px"
+                                nzSrc="{{imageUrl[0]}}"  />
+                                <input *ngIf="isInsert || isEdit" type="file"  class="hidden" name="anh1"
+                                    (change)="onFileImageSelect($event.target.files,0)" multiple id="img-change">
+                                <img *ngIf="isView" nz-image width="100px" height="100px"
+                                    nzSrc="assets/img/{{imageProduct[0]}}"  />
+                            </div>
+                        </div>
+                        <div nz-row class="p-10">
+                            <div nz-col nzSpan="6">Hình ảnh 2</div>
+                            <div nz-col nzSpan="18">
+                                <img *ngIf="imageUrl[1]" nz-image width="100px" height="100px"
+                                nzSrc="{{imageUrl[1]}}"  />
+                                <input *ngIf="isInsert || isEdit" type="file"  class="hidden" name="anh2"
+                                    (change)="onFileImageSelect($event.target.files,1)" multiple id="img-change">
+                                <img *ngIf="isView" nz-image width="100px" height="100px"
+                                    nzSrc="assets/img/{{imageProduct[1]}}"  />
+                            </div>
+                        </div>
+                        <div nz-row class="p-10">
+                            <div nz-col nzSpan="6">Hình ảnh 3</div>
+                            <div nz-col nzSpan="18">
+                                <img *ngIf="imageUrl[2]" nz-image width="100px" height="100px"
+                                nzSrc="{{imageUrl[2]}}"  />
+                                <input *ngIf="isInsert || isEdit" type="file"  class="hidden" name="anh3"
+                                    (change)="onFileImageSelect($event.target.files,2)" multiple id="img-change">
+                                <img *ngIf="isView" nz-image width="100px" height="100px"
+                                    nzSrc="assets/img/{{imageProduct[2]}}"  />
+                            </div>
+                        </div>
+                        <div nz-row class="p-10">
+                            <div nz-col nzSpan="6">Hình ảnh 4</div>
+                            <div nz-col nzSpan="18">
+                                <img *ngIf="imageUrl[3]" nz-image width="100px" height="100px"
+                                nzSrc="{{imageUrl[3]}}"  />
+                                <input *ngIf="isInsert || isEdit" type="file"  class="hidden" name="anh4"
+                                    (change)="onFileImageSelect($event.target.files,3)" multiple id="img-change">
+                                <img *ngIf="isView" nz-image width="100px" height="100px"
+                                    nzSrc="assets/img/{{imageProduct[3]}}"  />
                             </div>
                         </div>
                     </nz-form-control>

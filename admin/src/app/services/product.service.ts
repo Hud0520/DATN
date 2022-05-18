@@ -11,17 +11,20 @@ export class ProductService {
     return this.http.get<any>(`/api/admin/v1/sanpham`, params);
   }
   getProduct(id): Observable<any> {
-    return this.http.get<any>(`/api/admin/v1/product/` + id, null);
+    return this.http.get<any>(`/api/admin/v1/sanpham/` + id, null);
   }
   deleteProduct(id): Observable<any> {
-    return this.http.delete<any>(`/api/admin/v1/product/` + id);
+    return this.http.post<any>(`/api/admin/v1/sanpham/delete/`+id,null);
   }
   saveProduct(product): Observable<any> {
-    return this.http.post<any>(`/api/admin/v1/product/`, product);
+    return this.http.post<any>(`/api/admin/v1/sanpham/add`, product);
   }
-  postImage(id: number, file: File): Observable<any> {
+  postImage(id: number, file: File[]): Observable<any> {
     const data: FormData = new FormData();
-    data.append('file', file);
-    return this.http.postImage<any>(`/api/admin/v1/cms_anh/${id}`, data);
+      data.append('file0', file[0]);
+      data.append('file1', file[1]);
+      data.append('file2', file[2]);
+      data.append('file3', file[3]);
+    return this.http.postImage<any>(`/api/admin/v1/sanpham/cms_anh/${id}`, data);
   }
 }

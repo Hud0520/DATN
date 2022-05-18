@@ -169,8 +169,8 @@ export class QlUserComponent implements OnInit {
   ) {
     this.controlArray.set('pageIndex', pageIndex);
     this.controlArray.set('pageSize', pageSize);
-    this.controlArray.set('sortField', sortField);
-    this.controlArray.set('sortOrder', sortOrder);
+    this.controlArray.set('sortBy', sortField);
+    this.controlArray.set('order', sortOrder);
     // get product
     this.userService.getUsers(this.controlArray).subscribe(
       (data) => {

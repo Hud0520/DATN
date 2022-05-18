@@ -17,7 +17,12 @@ export class CategoryService {
   deleteCategory(id): Observable<any> {
     return this.http.post<any>(`/api/admin/v1/danhmuc/delete` , id);
   }
-  saveCategory(category): Observable<any> {
+  addCategory(category): Observable<any> {
     return this.http.post<any>(`/api/admin/v1/danhmuc/add`, category);
   }
+
+  saveCategory(category): Observable<any> {
+    return this.http.post<any>(`/api/admin/v1/danhmuc/update`, category);
+  }
+
 }

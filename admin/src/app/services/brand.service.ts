@@ -15,7 +15,7 @@ export class BrandService {
     return this.http.get<any>(`/api/admin/v1/thuonghieu`, null);
   }
   deleteBrand(id): Observable<any> {
-    return this.http.post<any>(`/api/admin/v1/thuonghieu/delete`,id);
+    return this.http.post<any>(`/api/admin/v1/thuonghieu/delete/`+id,null);
   }
   saveBrand(brand): Observable<any> {
     return this.http.post<any>(`/api/admin/v1/thuonghieu/add`, brand);
