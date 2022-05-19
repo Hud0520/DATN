@@ -47,10 +47,15 @@ public class NguoiDungServices extends BaseController {
 				if(filter.getHoTen() != null) {
 					pre.add(criteriaBuilder.like(root.get("hoTen"), "%"+filter.getHoTen()+"%"));
 				}
-				if(filter.getDiaChi() != null) {
-					pre.add(criteriaBuilder.like(root.get("diaChi"),"%"+filter.getDiaChi()+"%"));
+				if(filter.getEmail() != null) {
+					pre.add(criteriaBuilder.like(root.get("email"),"%"+filter.getEmail()+"%"));
 				}
-				
+				if(filter.getSdt() != null) {
+					pre.add(criteriaBuilder.equal(root.get("sdt"),filter.getSdt()));
+				}
+				if(filter.getRole() != null) {
+					pre.add(criteriaBuilder.equal(root.get("role"),filter.getRole()));
+				}
 				return criteriaBuilder.and(pre.toArray(new Predicate[pre.size()]));
 			}
 		}, pageable);

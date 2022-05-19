@@ -18,19 +18,23 @@
         </div>
         <div nz-col [nzSpan]="8">
             <nz-form-item>
-                <nz-form-label>Đơn giá từ</nz-form-label>
+                <nz-form-label>Trạng thái</nz-form-label>
                 <nz-form-control>
-                    <nz-input-number class="w-100" formControlName="priceFrom" [nzMin]="0" [nzStep]="100000">
-                    </nz-input-number>
+                <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Trạng thái" formControlName = "trangThai" >
+                    <nz-option nzValue="0" nzLabel="Chờ xử lý"></nz-option>
+                    <nz-option nzValue="1" nzLabel="Đang chuẩn bi hàng"></nz-option>
+                    <nz-option nzValue="2" nzLabel="Đơn hàng đang được giao"></nz-option>
+                    <nz-option nzValue="3" nzLabel="Đơn hàng đã được giao"></nz-option>
+                    <nz-option nzValue="4" nzLabel="Đơn hàng đã hủy" class="red"></nz-option>
+                  </nz-select>
                 </nz-form-control>
             </nz-form-item>
         </div>
         <div nz-col [nzSpan]="8">
             <nz-form-item>
-                <nz-form-label>Đơn giá đến</nz-form-label>
+                <nz-form-label>Số điện thoại </nz-form-label>
                 <nz-form-control>
-                    <nz-input-number class="w-100" formControlName="priceTo" [nzMin]="0" [nzStep]="100000">
-                    </nz-input-number>
+                    <input nz-input placeholder="Số điện thoại người nhận" formControlName="sodt" />
                 </nz-form-control>
             </nz-form-item>
         </div>
@@ -38,7 +42,7 @@
             <nz-form-item>
                 <nz-form-label>Từ ngày</nz-form-label>
                 <nz-form-control>
-                    <nz-date-picker class="w-100" formControlName="fromDate"></nz-date-picker>
+                    <nz-date-picker class="w-100" formControlName="fromDate" [nzFormat]="dateFormat"></nz-date-picker>
                 </nz-form-control>
             </nz-form-item>
         </div>
@@ -46,15 +50,15 @@
             <nz-form-item>
                 <nz-form-label>Đến ngày</nz-form-label>
                 <nz-form-control>
-                    <nz-date-picker class="w-100" formControlName="toDate"></nz-date-picker>
+                    <nz-date-picker class="w-100" formControlName="toDate" [nzFormat]="dateFormat"></nz-date-picker>
                 </nz-form-control>
             </nz-form-item>
         </div>
     </div>
     <div nz-row>
         <div nz-col [nzSpan]="24" class="search-area">
-            <button (click)="exportExcel()" class="btn-green"><i nz-icon nzType="file-excel" nzTheme="outline"></i> Xuất
-                Excel</button>
+            <!-- <button (click)="exportExcel()" class="btn-green"><i nz-icon nzType="file-excel" nzTheme="outline"></i> Xuất
+                Excel</button> -->
             <button nz-button (click)="search()" [nzType]="'primary'">Search</button>
             <button nz-button (click)="resetForm()">Clear</button>
         </div>
@@ -67,7 +71,7 @@
         <thead>
             <tr>
                 <th style="text-align: center;">STT</th>
-                <th nzColumnKey="billID" [nzSortFn]="true" style="text-align: center;">Mã đơn hàng</th>
+                <th nzColumnKey="id" [nzSortFn]="true" style="text-align: center;">Mã đơn hàng</th>
                 <th style="text-align: center;">Tên</th>
                 <th nzColumnKey="total" [nzSortFn]="true" style="text-align: center;">Tổng hóa đơn</th>
                 <th nzColumnKey="date" [nzSortFn]="true" style="text-align: center;">Ngày bán</th>
@@ -95,7 +99,7 @@
                     <ng-template #elseBlock><p class="red">Đơn hàng đã hủy</p> </ng-template>
                 </td>
                 <td>
-                    <button (click)="showModal(data.billID)" class="m-5" nz-button nzType="primary"><i nz-icon nzType="eye" nzTheme="outline"></i></button>
+                    <button (click)="showModal(data)" class="m-5" nz-button nzType="primary"><i nz-icon nzType="eye" nzTheme="outline"></i></button>
                     <nz-divider nzType="vertical"></nz-divider>
                     <button  *ngIf=" data.trangThai != '4'" (click)="cancelBill(data)" class="m-5" nz-button nzType="primary" nzDanger><i nz-icon nzType="minus-circle" nzTheme="outline"></i></button>
                     <nz-divider nzType="vertical"></nz-divider>
@@ -105,13 +109,29 @@
     </nz-table>
 </div>
 
-<nz-modal [nzStyle]="{ top: '20px',width:'100%' }" [(nzVisible)]="isVisible" nzTitle="Xem chi tiết">
+<nz-modal [nzStyle]="{ top: '20px',width:'70%' }" [(nzVisible)]="isVisible" nzTitle="Xem chi tiết">
     <ng-container *nzModalContent>
         <div class="m-container">
-            <div>
-                <h2>Mã đơn: </h2>
-                <h2>{{this.billId}}</h2>
-            </div>
+            <div class="row"><img src="assets/img/logo2.png" width="150px"></div>
+            <div class="row d-flex justify-content-center">
+                <div><h4>ĐƠN HÀNG</h4></div>
+              </div>
+              <div nz-row>
+                <div nz-col nzSpan="8">Họ tên khách hàng:</div>
+                <div nz-col nzSpan="8">{{hoadon.hoTen}}</div>
+              </div>
+              <div nz-row>
+                <div nz-col nzSpan="8">Số điện thoại:</div>
+                <div nz-col nzSpan="8" >{{hoadon.sdtNguoiNhan}}</div>
+              </div>
+              <div nz-row>
+                <div nz-col nzSpan="8">Email:</div>
+                <div nz-col nzSpan="8" >{{hoadon.emailNguoiNhan}}</div>
+              </div>
+              <div nz-row>
+                <div nz-col nzSpan="8">Địa chỉ nhận:</div>
+                <div nz-col nzSpan="8">{{hoadon.diaChiNhan}}</div>
+              </div>
             <nz-divider nzPlain nzText="Chi tiết"></nz-divider>
             <nz-table nzTemplateMode>
                 <thead>
@@ -127,10 +147,10 @@
                 <tbody>
                     <tr *ngFor="let data of listOfBillDetail; ; let i = index">
                         <td style="text-align: center;">{{i+1}}</td>
-                        <td style="text-align: center;">{{data?.product?.productID}}</td>
-                        <td style="text-align: center;">{{data?.product?.productName}}</td>
-                        <td style="text-align: center;">{{data.price| number}}</td>
-                        <td style="text-align: center;">{{data.quantity}}</td>
+                        <td style="text-align: center;">{{data?.id}}</td>
+                        <td style="text-align: center;">{{data?.TEN_SAN_PHAM}}</td>
+                        <td style="text-align: center;">{{data.DON_GIA| number}}</td>
+                        <td style="text-align: center;">{{data.SO_LUONG}}</td>
                     </tr>
                 </tbody>
             </nz-table>

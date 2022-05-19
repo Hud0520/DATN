@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzModalService } from 'ng-zorro-antd/modal';
@@ -27,6 +27,8 @@ export class QlUserComponent implements OnInit {
   isEdit = false;
   isInsert = false;
   isView = false;
+  passwordVisible1 = false;
+  passwordVisible = false;
   controlArray: Map<string, any> = new Map<string, any>();
   
   constructor(
@@ -48,16 +50,24 @@ export class QlUserComponent implements OnInit {
     this.searchForm = this.fb.group({
       userName: [null],
       email: [null],
-      phone: [0],
+      phone: [null],
+      quyen: [null],
     });
     // form product
     this.userForm = this.fb.group({
       userID: [null],
-      userName: [null, [Validators.required]],
-      userEmail: [null, [Validators.required]],
-      userPhone: [0, [Validators.required]],
+      userName: [null],
+      userEmail: [null],
+      userPhone: [null],
+      diaChi: [null],
+      name : [null,Validators.required],
+      quyen:[1],
+      matKhau: [null,Validators.required],
+      
     });
   }
+
+  
   showModal(id, action): void {
     this.isVisible = true;
     if (action == 'EDIT') {
@@ -65,11 +75,16 @@ export class QlUserComponent implements OnInit {
       this.isInsert = false;
       this.isView = false;
       this.listOfData.forEach((item) => {
-        if (item.userID == id) {
-          this.userForm.controls.userID.setValue(item.userID);
-          this.userForm.controls.userName.setValue(item.userName);
-          this.userForm.controls.userEmail.setValue(item.userEmail);
-          this.userForm.controls.userPhone.setValue(item.userPhone);
+        if (item.id == id) {
+          debugger;
+          this.userForm.controls.userID.setValue(item.id);
+          this.userForm.controls.userName.setValue(item.hoTen);
+          this.userForm.controls.userEmail.setValue(item.email);
+          this.userForm.controls.userPhone.setValue(item.sdt);
+          this.userForm.controls.diaChi.setValue(item.diaChi);
+          this.userForm.controls.name.setValue(item.userName);
+          this.userForm.controls.quyen.setValue(item.role);
+          this.userForm.controls.matKhau.setValue(null);
         }
       });
     }
@@ -80,7 +95,11 @@ export class QlUserComponent implements OnInit {
       this.userForm.controls.userID.setValue(null);
       this.userForm.controls.userName.setValue(null);
       this.userForm.controls.userEmail.setValue(null);
-      this.userForm.controls.userPhone.setValue(0);
+      this.userForm.controls.userPhone.setValue(null);
+      this.userForm.controls.diaChi.setValue(null);
+      this.userForm.controls.name.setValue(null);
+      this.userForm.controls.quyen.setValue(1);
+      this.userForm.controls.matKhau.setValue(null);
     }
   }
 
@@ -95,26 +114,20 @@ export class QlUserComponent implements OnInit {
         this.userForm.controls[i].updateValueAndValidity();
       }
     }
-    this.user.userID =this.userForm.controls.userID.value;
-    this.user.userName =this.userForm.controls.userName.value;
-    this.user.userPhone =this.userForm.controls.userPhone.value;
-    this.user.userEmail =this.userForm.controls.userEmail.value;
+    this.user.id =this.userForm.controls.userID.value;
+    this.user.hoTen =this.userForm.controls.userName.value;
+    this.user.sdt =this.userForm.controls.userPhone.value;
+    this.user.email =this.userForm.controls.userEmail.value;
+    this.user.diaChi=this.userForm.controls.diaChi.value;
+this.user.userName=          this.userForm.controls.name.value;
+         this.user.role =  this.userForm.controls.quyen.value;
+         this.user.passWord = this.userForm.controls.matKhau.value;
     this.userService.saveUser(this.user).subscribe(
       (data) => {
-        if (data && data.result) {
-          if(this.isInsert){
-            this.createNotification(
-              'success',
-              'Thêm thành công!',
-              ''
-            );  
-          }else{
-            this.createNotification(
-              'success',
-              'Sửa thành công!',
-              ''
-            );  
-          }
+        if(data.errCode == '00'){
+          this.createNotification('success', 'Thành công!', '');
+        }else{
+          this.createNotification('error', 'Lỗi', data.errMsg);
         }
       },
       (error) => {
@@ -139,9 +152,11 @@ export class QlUserComponent implements OnInit {
     const name = this.searchForm.controls.userName.value;
     const phone = this.searchForm.controls.phone.value;
     const email = this.searchForm.controls.email.value;
-    this.controlArray.set('userName', name);
-    this.controlArray.set('phone', phone);
+    const quyen = this.searchForm.controls.quyen.value;
+    this.controlArray.set('hoTen', name);
+    this.controlArray.set('sdt', phone);
     this.controlArray.set('email', email);
+    this.controlArray.set('role', quyen);
     this.getUsers(this.pageIndex, this.pageSize, null, null);
   }
 
@@ -167,17 +182,17 @@ export class QlUserComponent implements OnInit {
     sortField: string | null,
     sortOrder: string | null
   ) {
-    this.controlArray.set('pageIndex', pageIndex);
+    this.controlArray.set('page', pageIndex);
     this.controlArray.set('pageSize', pageSize);
     this.controlArray.set('sortBy', sortField);
     this.controlArray.set('order', sortOrder);
     // get product
     this.userService.getUsers(this.controlArray).subscribe(
       (data) => {
-        if (data && data.results) {
+        if (data && data.result) {
           this.loading = false;
-          this.listOfData = data.results;
-          this.total = data.rowCount;
+          this.listOfData = data.result;
+          this.total = data.total;
         }
       },
       (error) => {

@@ -2,6 +2,7 @@ package vn.scam.metashop.admin.controller;
 
 import java.nio.file.Path;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
@@ -14,9 +15,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import vn.scam.metashop.BaseController;
@@ -36,6 +40,7 @@ public class DonHangControllerAdmin extends BaseController {
     @Autowired DonHangRepo donHangRepo;
 	@Autowired DonHangServices danhMucServices;
     @Autowired ChiTietDonHangRepo chiTietDonHangRepo;
+    @Autowired JdbcTemplate jdbctemplate;
 	@GetMapping(path = "")
 	public ResponseEntity getListData(DonHangDto object, HttpServletRequest request, HttpServletResponse response){
 		try {
@@ -56,7 +61,7 @@ public class DonHangControllerAdmin extends BaseController {
 	}
 	
 	@PostMapping(path = "/update")
-	public ResponseEntity<MetaResponse> update(DonHang object, HttpServletRequest request, HttpServletResponse response){
+	public ResponseEntity<MetaResponse> update(@RequestBody DonHang object, HttpServletRequest request, HttpServletResponse response){
 		Optional<DonHang> exit = donHangRepo.findById(object.getId());
 		if(exit.isPresent()) {
 			DonHang current = exit.get();
@@ -64,6 +69,7 @@ public class DonHangControllerAdmin extends BaseController {
             current.setEmailNguoiNhan(object.getEmailNguoiNhan());
             current.setGhiChu(object.getGhiChu());
             current.setTrangThai(object.getTrangThai());
+            donHangRepo.save(current);
 			return successResponse();
 		}else {
 			return errorResponse("Có lỗi xảy ra danh mục không tồn tại");
@@ -93,17 +99,31 @@ public class DonHangControllerAdmin extends BaseController {
         }
     }
 
-	@GetMapping(path = "/chitiet")
-	public ResponseEntity getListSanPham(String id){
+	@GetMapping(path = "/chitiet/{id}")
+	public ResponseEntity getListSanPham(@PathVariable(name = "id") Integer id){
 		MetaResponse res = new MetaResponse();
 		if(id == null){
 			return errorResponse("Bạn cần chọn đơn hàng để xem chi tiết");
 		}else{
-			List<ChiTietDonHang> exit = chiTietDonHangRepo.findByMaDonHang(id);
+			String sql = "SELECT sp.id,sp.TEN_SAN_PHAM,ct.DON_GIA,ct.SO_LUONG FROM SANPHAM sp inner join CHITIETDONHANG ct on sp.ID = ct.MA_SAN_PHAM WHERE ct.MA_DON_HANG = "+id;
+			List<Map<String, Object>> exit = jdbctemplate.queryForList(sql);
 			res.setData(exit);
             res.setErrCode(Constants.SUCCESS_CODE);
             res.setErrMsg(Constants.SUCCESS_MSG);
             return successResponse(res);
 		}
 	}
+	
+	@PostMapping(value = "/cancel-bill")
+	public ResponseEntity<MetaResponse> cancelBill(@RequestBody DonHang bill) {
+		if(bill!=null) {
+			// save bill	
+			bill.setTrangThai(Constants.Status.CANCELED);
+			donHangRepo.save(bill);
+			// refund produc
+			return new ResponseEntity<MetaResponse>(new MetaResponse("00","oke"), HttpStatus.OK);
+		}
+		return new ResponseEntity<MetaResponse>(new MetaResponse("44", "Lỗi trống"), HttpStatus.OK);
+	}
+
 }

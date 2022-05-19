@@ -28,6 +28,7 @@ import vn.scam.metashop.dto.MetaResponse;
 import vn.scam.metashop.entity.NguoiDung;
 import vn.scam.metashop.repository.NguoiDungRepo;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 
@@ -39,20 +40,24 @@ public class NguoiDungControllerAdmin extends BaseController {
     @Autowired private CommonUtils commonUtils;
     
     @PostMapping(path = "/add")
-    public ResponseEntity<MetaResponse> create(NguoiDung object){
-		Optional<NguoiDung> exit = nguoiDungRepo.findByUserName(object.getUserName());
-		if(exit.isPresent()) {
-			return errorResponse("Tên người dùng đã tồn tại");
-		}if(object.getPassWord().trim().length() <5){
-            return errorResponse("Mật khẩu phải dài hơn 5 ký tự");       
-        }else {
-			object.setPassWord(HashMD5.encode(object.getPassWord()));
-			nguoiDungRepo.save(object);
-		}
+    public ResponseEntity<MetaResponse> create(@RequestBody NguoiDung object){
+    	if(object.getId() == null) {
+			Optional<NguoiDung> exit = nguoiDungRepo.findByUserName(object.getUserName());
+			if(exit.isPresent()) {
+				return errorResponse("Tên người dùng đã tồn tại");
+			}if(object.getPassWord().trim().length() <5){
+	            return errorResponse("Mật khẩu phải dài hơn 5 ký tự");       
+	        }else {
+				object.setPassWord(HashMD5.encode(object.getPassWord()));
+				nguoiDungRepo.save(object);
+			}
+    	}else {
+    		nguoiDungRepo.save(object);
+    	}
 		return successResponse();	
 	}
 	@PostMapping(path = "/update")
-	public ResponseEntity<MetaResponse> update(NguoiDung object){
+	public ResponseEntity<MetaResponse> update(@RequestBody NguoiDung object){
 		Optional<NguoiDung> exit = nguoiDungRepo.findById(object.getId());
 		if(exit.isPresent()) {
 			NguoiDung current = exit.get();
@@ -65,8 +70,8 @@ public class NguoiDungControllerAdmin extends BaseController {
 			return errorResponse("Có lỗi xảy ra danh mục không tồn tại");
 		}	
 	}
-    @PostMapping( path = "/delete")
-	public ResponseEntity<MetaResponse> delete(Integer id) {
+    @PostMapping( path = "/delete/{id}")
+	public ResponseEntity<MetaResponse> delete(@PathVariable Integer id) {
 		try{nguoiDungRepo.deleteById(id);
 			return successResponse();
 		}catch (Exception e) {
@@ -75,7 +80,7 @@ public class NguoiDungControllerAdmin extends BaseController {
 		}
 	}
 
-    @GetMapping(path = "/list-data")
+    @GetMapping(path = "")
     public ResponseEntity getAllData(NguoiDung object, HttpServletRequest request, HttpServletResponse response) {
         try {
 			int pageSize = request.getParameter("pageSize") == null ? 20 : Integer.valueOf(request.getParameter("pageSize"));

@@ -23,7 +23,8 @@ public class Constants {
 	public static final String FAIL_CODE = "44";
 	public static final String FAIL_MSG = "Fail";
 
-	public static final String GIO_HANG = "gio_hang"; 
+	public static final String GIO_HANG = "gio_hang";
+	
 	
 	public class Exception {
 		public static final String ERR_SESSION_TIMEOUT = "ERR_SESSION_TIMEOUT";

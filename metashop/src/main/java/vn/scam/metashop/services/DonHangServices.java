@@ -28,6 +28,9 @@ public class DonHangServices {
 			public Predicate toPredicate(Root<DonHang> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
 				// TODO Auto-generated method stub
 				List<Predicate> predicateList = new ArrayList<>();
+				if(filterObject.getId() != null) {
+					predicateList.add(criteriaBuilder.equal(root.get("id"), filterObject.getId()));
+				}
 				if(filterObject.getSdtNguoiNhan() != null) {
 					predicateList.add(criteriaBuilder.like(root.get("sdtNguoiNhan"), "%"+filterObject.getSdtNguoiNhan()+"%"));
 				}

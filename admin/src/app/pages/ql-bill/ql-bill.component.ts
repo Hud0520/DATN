@@ -26,6 +26,8 @@ export class QlBillComponent implements OnInit {
   controlArray: Map<string, any> = new Map<string, any>();
   listOfBillDetail: any;
   billId: string;
+  hoadon: any;
+  dateFormat = "yyyy-MM-dd";
   bill: Bill;
   constructor(
     private fb: FormBuilder,
@@ -47,15 +49,15 @@ export class QlBillComponent implements OnInit {
       billID: [null],
       fromDate: [null],
       toDate: [null],
-      priceFrom: [0],
-      priceTo: [0],
+      trangThai: [null],
+      sodt: [null],
       userName: [null],
     });
   }
-  showModal(id): void {
+  showModal(data): void {
     this.isVisible = true;
-    this.billId = id;
-    this.getBillDetail(id);
+    this.hoadon = data;
+    this.getBillDetail(data.id);
   }
 
   handlePrint(): void {
@@ -65,24 +67,20 @@ export class QlBillComponent implements OnInit {
     this.isVisible = false;
   }
   search() {
+    debugger;
     const billId = this.searchForm.controls.billID.value;
     const fromDate = this.searchForm.controls.fromDate.value;
     const toDate = this.searchForm.controls.toDate.value;
     const userName = this.searchForm.controls.userName.value;
-    const priceFrom =
-      this.searchForm.controls.priceFrom.value == 0
-        ? null
-        : this.searchForm.controls.priceFrom.value;
-    const priceTo =
-      this.searchForm.controls.priceTo.value == 0
-        ? null
-        : this.searchForm.controls.priceTo.value;
-    this.controlArray.set('billID', billId);
-    this.controlArray.set('fromDate', this.convertDate(fromDate));
-    this.controlArray.set('toDate', this.convertDate(toDate));
-    this.controlArray.set('userName', userName);
-    this.controlArray.set('priceFrom', priceFrom);
-    this.controlArray.set('priceTo', priceTo);
+    const sodt = this.searchForm.controls.sodt.value;
+    const trangThai = this.searchForm.controls.trangThai.value;
+
+    this.controlArray.set('id', billId);
+    this.controlArray.set('tuNgay', this.convertDate(fromDate));
+    this.controlArray.set('denNgay', this.convertDate(toDate));
+    this.controlArray.set('hoTen', userName);
+    this.controlArray.set('sdtNguoiNhan', sodt);
+    this.controlArray.set('trangThai', trangThai);
     console.log(this.controlArray);
     this.getBills(this.pageIndex, this.pageSize, null, null);
   }
@@ -134,8 +132,8 @@ export class QlBillComponent implements OnInit {
   getBillDetail(id) {
     this.billService.getBillDetail(id).subscribe(
       (data) => {
-        if (data && data.result) {
-          this.listOfBillDetail = data.result;
+        if (data && data.data) {
+          this.listOfBillDetail = data.data;
         }
       },
       (error) => {
@@ -185,9 +183,9 @@ export class QlBillComponent implements OnInit {
       nzOnCancel: () => console.log('Cancel'),
     });
   }
-  changeStatus(e, bill) {
+  changetrangThai(e, bill) {
     this.bill = bill;
-    this.bill.status = e;
+    this.bill.trangThai = e;
     this.billService.saveBill(this.bill).subscribe(
       (data) => {
         this.createNotification('success', 'Thay đổi thành công!', '');
@@ -243,6 +241,7 @@ export class QlBillComponent implements OnInit {
         mnth = ('0' + (date.getMonth() + 1)).slice(-2),
         day = ('0' + date.getDate()).slice(-2);
       return [date.getFullYear(), mnth, day].join('/');
+      
     }
     return null;
   }

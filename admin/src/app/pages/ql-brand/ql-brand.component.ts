@@ -75,7 +75,7 @@ export class QlBrandComponent implements OnInit {
     if (brandName && brandId) {
       this.brand.id = brandId;
       this.brand.tenNhanHieu = brandName;
-      this.brand.tenVanTat = tenVanTat
+      this.brand.tenVanTat = tenVanTat;
 
       this.brandService.saveBrand(this.brand).subscribe(
         (data) => {
@@ -100,7 +100,7 @@ export class QlBrandComponent implements OnInit {
     } else if (brandName) {
       this.brand.id = null;
       this.brand.tenNhanHieu = brandName;
-
+      this.brand.tenVanTat = tenVanTat;
       this.brandService.saveBrand(this.brand).subscribe(
         (data) => {
           if(data.errCode == '00'){

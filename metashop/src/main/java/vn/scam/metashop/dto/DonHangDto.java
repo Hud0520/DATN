@@ -25,8 +25,6 @@ public class DonHangDto {
     private String moTa;
     private String ghiChu;
 
-    @JsonFormat(pattern="yyyy-MM-dd")
     private Date tuNgay;
-    @JsonFormat(pattern="yyyy-MM-dd")
     private Date denNgay;
 }

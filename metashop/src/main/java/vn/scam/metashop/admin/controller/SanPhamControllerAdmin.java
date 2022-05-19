@@ -186,7 +186,6 @@ public class SanPhamControllerAdmin extends BaseController {
 					is1.close();
 				}
 				// save product
-				sanPhamRepo.save(product);
 				
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -227,7 +226,6 @@ public class SanPhamControllerAdmin extends BaseController {
 					is1.close();
 				}
 				// save product
-				sanPhamRepo.save(product);
 				
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -268,7 +266,6 @@ public class SanPhamControllerAdmin extends BaseController {
 					is1.close();
 				}
 				// save product
-				sanPhamRepo.save(product);
 				
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -309,15 +306,17 @@ public class SanPhamControllerAdmin extends BaseController {
 					is1.close();
 				}
 				// save product
-				sanPhamRepo.save(product);
+				
 				
 			} catch (IOException e) {
 				e.printStackTrace();
 				return new ResponseEntity<MetaResponse>(new MetaResponse("00","","Update thành công"), HttpStatus.OK);
 			}
 			}
+			sanPhamRepo.save(product);
 			return new ResponseEntity<MetaResponse>(new MetaResponse("00","","Update thành công"), HttpStatus.OK);
 		}
+		
 		return ResponseEntity.notFound().build();
 	}
 }

@@ -39,8 +39,8 @@ public class DonHangController extends BaseController {
         if(Constants.SUCCESS_CODE.equals(res.getErrCode())){
         	donhang.setNgayTao(new Date());
             donhang.setTrangThai(Constants.Status.PENDING);
-            donHangRepo.save(donhang);
-            Integer maDonHang = donhang.getId();
+            DonHang save = donHangRepo.save(donhang);
+            Integer maDonHang = save.getId();
             List<ChiTietDonHang> chitiet = donhang.getChiTiet();
             for(ChiTietDonHang a : chitiet) {
             	a.setMaDonHang(maDonHang);

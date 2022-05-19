@@ -55,7 +55,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:4222","http://localhost:4200"));
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:4222","http://localhost:4200","http://localhost:62222"));
         configuration.setAllowedMethods(Arrays.asList("*"));
         configuration.setAllowedHeaders(Arrays.asList("*"));
         configuration.setAllowCredentials(true);
@@ -88,7 +88,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //		httpSecurity.csrf().disable().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
 //				.authorizeRequests().antMatchers("/api/admin/v1/nguoidung/login").permitAll();
 //		
-		httpSecurity.cors().and().csrf().disable().authorizeHttpRequests().antMatchers("/api/*").permitAll()
+		httpSecurity.cors().and().csrf().disable().authorizeHttpRequests().antMatchers("/api/v1/*").permitAll()
 			.and().authorizeHttpRequests().antMatchers("/api/admin/v1/nguoidung/login").permitAll()
 			.and().authorizeHttpRequests().antMatchers("/api/admin/**").authenticated()
 			.and().exceptionHandling().authenticationEntryPoint(restServicesEntryPoint()).and().sessionManagement()

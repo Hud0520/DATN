@@ -39,3 +39,6 @@ button {
   margin-right: 6px;
   font-size: 24px;
 }
+nz-select {
+  width: 170px;
+}

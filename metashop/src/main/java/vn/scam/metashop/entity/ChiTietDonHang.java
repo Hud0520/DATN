@@ -28,7 +28,7 @@ public class ChiTietDonHang {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     
-    @Column(name="MA_DON_HANG")
+    @Column(name = "MA_DON_HANG")
     private Integer maDonHang;
 
     @Column(name = "MA_SAN_PHAM")
@@ -40,12 +40,5 @@ public class ChiTietDonHang {
     @Column(name = "DON_GIA")
     private BigDecimal donGia;
 
-
-    public ChiTietDonHang(Integer maDonHang,Integer maSanPham,int soLuong,BigDecimal donGia) {
-        this.maDonHang = maDonHang;
-        this.maSanPham = maSanPham;
-        this.soLuong = soLuong;
-        this.donGia = donGia;
-    } 
 
 }

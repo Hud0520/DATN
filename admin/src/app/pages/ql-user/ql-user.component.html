@@ -1,6 +1,6 @@
 <form nz-form [formGroup]="searchForm" class="ant-advanced-search-form">
     <div nz-row [nzGutter]="24">
-        <div nz-col [nzSpan]="8">
+        <div nz-col [nzSpan]="6">
             <nz-form-item>
                 <nz-form-label>Tên sản phẩm</nz-form-label>
                 <nz-form-control>
@@ -8,7 +8,7 @@
                 </nz-form-control>
             </nz-form-item>
         </div>
-        <div nz-col [nzSpan]="8">
+        <div nz-col [nzSpan]="6">
             <nz-form-item>
                 <nz-form-label>Email</nz-form-label>
                 <nz-form-control>
@@ -16,12 +16,23 @@
                 </nz-form-control>
             </nz-form-item>
         </div>
-        <div nz-col [nzSpan]="8">
+        <div nz-col [nzSpan]="6">
             <nz-form-item>
                 <nz-form-label>Số điện thoại</nz-form-label>
                 <nz-form-control>
                     <nz-input-number class="w-100" formControlName="phone" [nzMin]="0" [nzStep]="100000">
                     </nz-input-number>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="6">
+            <nz-form-item>
+                <nz-form-label>Quyền</nz-form-label>
+                <nz-form-control>
+                    <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Quyền" formControlName="quyen">
+                        <nz-option nzValue="0" nzLabel="Khách hàng"></nz-option>
+                        <nz-option nzValue="1" nzLabel="Quản trị"></nz-option>
+                    </nz-select>
                 </nz-form-control>
             </nz-form-item>
         </div>
@@ -40,10 +51,13 @@
         <thead>
             <tr>
                 <th style="text-align: center;">STT</th>
-                <th nzColumnKey="userID" [nzSortFn]="true" style="text-align: center;">Mã KH</th>
+                <th nzColumnKey="userID" [nzSortFn]="true" style="text-align: center;">Mã</th>
                 <th style="text-align: center;">Tên</th>
                 <th style="text-align: center;">Email</th>
-                <th style="text-align: center;">Phone</th>
+                <th style="text-align: center;">Số điện thoại</th>
+                <th style="text-align: center;">Địa chỉ</th>
+                <th style="text-align: center;">User name</th>
+                <th style="text-align: center;">Quyền</th>
                 <th style=" display: flex; justify-content: space-around; align-items: center;"> <span>Thao tác</span>
                     <a (click)="showModal(null,'INSERT')" title="Thêm mới"><i style="font-size: 20px;" nz-icon
                             nzType="plus-circle" nzTheme="twotone"></i></a>
@@ -53,16 +67,19 @@
         <tbody>
             <tr *ngFor="let data of listOfData; ; let i = index">
                 <td>{{i+1}}</td>
-                <td>{{data.userID}}</td>
+                <td>{{data.id}}</td>
+                <td>{{data.hoTen}}</td>
+                <td>{{data.email}}</td>
+                <td>{{data.sdt}}</td>
+                <td>{{data.diaChi}}</td>
                 <td>{{data.userName}}</td>
-                <td>{{data.userEmail}}</td>
-                <td>{{data.userPhone}}</td>
+                <td>{{data.role == 0 ? "Khách hàng" : "Quản trị"}}</td>
                 <td>
-                    <button (click)="showModal(data.userID,'EDIT')" class="m-5" nz-button
-                        nzType="default">Sửa</button>
+                    <button (click)="showModal(data.id,'EDIT')" class="m-5" nz-button nzType="default"><i nz-icon
+                            nzType="edit" nzTheme="outline"></i></button>
                     <nz-divider nzType="vertical"></nz-divider>
-                    <button (click)="delUser(data.userID)" class="m-5" nz-button nzType="primary"
-                        nzDanger>Xóa</button>
+                    <button (click)="delUser(data.id)" class="m-5" nz-button nzType="primary" nzDanger><i nz-icon
+                            nzType="delete" nzTheme="outline"></i></button>
                     <nz-divider nzType="vertical"></nz-divider>
                 </td>
             </tr>
@@ -86,7 +103,10 @@
                                 </nz-input-group>
                             </div>
                         </div>
-                       
+                    </nz-form-control>
+                </nz-form-item>
+                <nz-form-item>
+                    <nz-form-control >
                         <div nz-row class="p-10">
                             <div nz-col nzSpan="6">Số điện thoại</div>
                             <div nz-col nzSpan="18">
@@ -95,7 +115,10 @@
                                 </nz-input-number>
                             </div>
                         </div>
-                       
+                    </nz-form-control>
+                </nz-form-item>
+                <nz-form-item>
+                    <nz-form-control >
                         <div nz-row class="p-10">
                             <div nz-col nzSpan="6">Email</div>
                             <div nz-col nzSpan="18">
@@ -105,7 +128,62 @@
                                 </nz-input-group>
                             </div>
                         </div>
-                        
+                    </nz-form-control>
+                </nz-form-item>
+                <nz-form-item>
+                    <nz-form-control >
+                        <div nz-row class="p-10">
+                            <div nz-col nzSpan="6">Địa chỉ</div>
+                            <div nz-col nzSpan="18">
+                                <nz-input-group>
+                                    <input type="text" nz-input formControlName="diaChi" placeholder="Địa chỉ" />
+                                </nz-input-group>
+                            </div>
+                        </div>
+                    </nz-form-control>
+                </nz-form-item>
+                <nz-form-item>
+                    <nz-form-control nzErrorTip="Vui lòng nhập tên người dùng ">
+                        <div nz-row class="p-10">
+                            <div nz-col nzSpan="6">UserName</div>
+                            <div nz-col nzSpan="18">
+                                <nz-input-group>
+                                    <input type="text" nz-input formControlName="name" placeholder="Email" />
+                                </nz-input-group>
+                            </div>
+                        </div>
+                    </nz-form-control>
+                </nz-form-item>
+                <nz-form-item>
+                    <nz-form-control >
+                        <div nz-row class="p-10">
+                            <div nz-col nzSpan="6">Nhóm quyền</div>
+                            <div nz-col nzSpan="18">
+                                <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Quyền" formControlName="quyen">
+                                    <nz-option nzValue="0" nzLabel="Khách hàng"></nz-option>
+                                    <nz-option nzValue="1" nzLabel="Quản trị"></nz-option>
+                                </nz-select>
+                            </div>
+                        </div>
+                    </nz-form-control>
+                </nz-form-item>
+                <nz-form-item>
+                    <nz-form-control nzErrorTip="Vui lòng nhập mật khẩu">
+                        <div nz-row class="p-10">
+                            <div nz-col nzSpan="6">Mật khẩu</div>
+                            <div nz-col nzSpan="18">
+                                <nz-input-group>
+                                    <nz-input-group [nzSuffix]="suffixTemplate">
+                                        <input [type]="passwordVisible ? 'text' : 'password'" nz-input
+                                            placeholder="Mật khẩu" formControlName="matKhau" />
+                                    </nz-input-group>
+                                    <ng-template #suffixTemplate>
+                                        <i nz-icon [nzType]="passwordVisible ? 'eye-invisible' : 'eye'"
+                                            (click)="passwordVisible = !passwordVisible"></i>
+                                    </ng-template>
+                                </nz-input-group>
+                            </div>
+                        </div>
                     </nz-form-control>
                 </nz-form-item>
             </form>
